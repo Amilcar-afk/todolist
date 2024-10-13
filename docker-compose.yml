@@ -1,0 +1,40 @@
+services:
+  api:
+    build:
+      context: ./api
+    container_name: api_platform
+    ports:
+      - "8000:8000"
+    #volumes:
+      #- ./api:/var/www/html
+    environment:
+      DATABASE_URL: postgres://user:password@db:5432/todolist
+    depends_on:
+      - db
+    command: php -S 0.0.0.0:8000 -t public
+
+  front:
+    build:
+      context: ./front
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./front:/usr/src/app
+    stdin_open: true
+    tty: true
+
+  db:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      POSTGRES_DB: todolist
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
