@@ -18,7 +18,7 @@ services:
       context: ./front
     container_name: frontend
     ports:
-      - "3000:3000"
+      - "3001:3000"
     volumes:
       - ./front:/usr/src/app
     stdin_open: true
