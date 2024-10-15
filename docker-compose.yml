@@ -5,8 +5,8 @@ services:
     container_name: api_platform
     ports:
       - "8000:8000"
-    #volumes:
-      #- ./api:/var/www/html
+    volumes:
+      - ./api:/var/www/html
     environment:
       DATABASE_URL: postgres://user:password@db:5432/todolist
     depends_on:
