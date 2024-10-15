@@ -1,18 +1,55 @@
-import React from 'react';
+import React, {useContext, useState} from 'react';
 import { DarkThemeToggle, Flowbite } from 'flowbite-react';
+import {useNavigate} from "react-router-dom";
+import {AuthContext} from "../../../contexts/AuthContext.js";
 
 const RegisterForm = () => {
+
+    const {register} = useContext(AuthContext);
+    const navigate = useNavigate();
+    const [userData, setUserData] = useState({
+        firstname: '',
+        lastname: '',
+        email: '',
+        password: '',
+    });
+
+    const handleChange = (e) => {
+        const {name, value} = e.target;
+        setUserData({
+            ...userData,
+            [name]: value,
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const formattedData = {
+            'firstname': userData.firstname,
+            'lastname': userData.lastname,
+            'email': userData.email,
+            'password': userData.password
+        };
+        const responseCode = await register(formattedData);
+        if (responseCode === 201){
+            navigate('/login');
+        }
+    };
+
     return (
         <Flowbite>
             <div
                 className=" container-form min-h-screen flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
                 <h1 className="text-4xl font-bold mb-6">Inscription</h1>
 
-                <form className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md">
+                <form className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md" onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
                         <input
                             type="email"
+                            name="email"
+                            value={userData.email}
+                            onChange={handleChange}
                             className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                         />
                     </div>
@@ -22,6 +59,9 @@ const RegisterForm = () => {
                             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Prénom</label>
                             <input
                                 type="text"
+                                name="firstname"
+                                value={userData.firstname}
+                                onChange={handleChange}
                                 className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                             />
                         </div>
@@ -30,6 +70,9 @@ const RegisterForm = () => {
                             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom</label>
                             <input
                                 type="text"
+                                name="lastname"
+                                value={userData.lastname}
+                                onChange={handleChange}
                                 className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                             />
                         </div>
@@ -40,7 +83,10 @@ const RegisterForm = () => {
                             passe</label>
                         <input
                             type="password"
+                            name="password"
                             className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                            value={userData.password}
+                            onChange={handleChange}
                         />
                     </div>
 
