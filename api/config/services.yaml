@@ -25,5 +25,17 @@ services:
             - { name: doctrine.event_listener, event: prePersist }
             - { name: doctrine.event_listener, event: preUpdate }
 
+    App\EventListener\VerificationTokenListener:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    App\EventListener\SendMailRegistrationListener:
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: [ 'controller.service_arguments' ]
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
