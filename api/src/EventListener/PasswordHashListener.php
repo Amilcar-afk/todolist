@@ -5,6 +5,7 @@ namespace App\EventListener;
 use App\Entity\User;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PrePersistEventArgs;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class PasswordHashListener
@@ -27,7 +28,7 @@ class PasswordHashListener
         $this->encodePassword($entity);
     }
 
-    public function preUpdate(LifecycleEventArgs $event): void
+    public function preUpdate(PreUpdateEventArgs $event): void
     {
         $entity = $event->getObject();
 
@@ -35,11 +36,14 @@ class PasswordHashListener
             return;
         }
 
-        $this->encodePassword($entity);
-        // Cette ligne est nécessaire pour informer Doctrine que le champ "password" a été modifié
-        $em = $event->getEntityManager();
-        $metadata = $em->getClassMetadata(get_class($entity));
-        $em->getUnitOfWork()->recomputeSingleEntityChangeSet($metadata, $entity);
+        // vérifie si le champ "password" a été modifié avant de l'encoder
+        if ($event->hasChangedField('password')) {
+            $this->encodePassword($entity);
+            // recalcule les modifications sur l'entité après mise à jour du mot de passe
+            $em = $event->getEntityManager();
+            $metadata = $em->getClassMetadata(get_class($entity));
+            $em->getUnitOfWork()->recomputeSingleEntityChangeSet($metadata, $entity);
+        }
     }
 
     private function encodePassword(User $user): void
@@ -48,7 +52,7 @@ class PasswordHashListener
             return;
         }
 
-        // Hachage du mot de passe
+        // hachage du mot de passe
         $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPassword());
         $user->setPassword($hashedPassword);
     }
