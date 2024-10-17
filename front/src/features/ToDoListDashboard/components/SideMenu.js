@@ -9,9 +9,8 @@ import {
 } from "react-icons/hi";
 import {HiCalendarDays, HiCog6Tooth, HiRectangleStack} from "react-icons/hi2";
 
-export function SideMenu() {
+export function SideMenu({ setOpenModal }) {
     const [isOpen, setIsOpen] = useState(true);
-
     const handleClose = () => setIsOpen(false);
 
     return (
@@ -21,7 +20,7 @@ export function SideMenu() {
                     onClick={() => setIsOpen(true)}
                     className="absolute top-0 left-0 m-4 bg-blue-700 hover:bg-blue-800 text-white font-medium rounded-lg text-sm px-4 text-center"
                 >
-                    Show navigation
+                    Menu
                 </Button>
             </div>
             <Drawer open={isOpen} onClose={handleClose}>
@@ -38,7 +37,7 @@ export function SideMenu() {
                                 </form>
                                 <Sidebar.Items>
                                     <Sidebar.ItemGroup>
-                                        <Sidebar.Item className="navbar-item-hover text-[#ff8d50]" href="#" icon={() => <HiPlusCircle className="text-[#ff8d50] w-6 h-6" />}>
+                                        <Sidebar.Item onClick={() => setOpenModal(true)} className="navbar-item-hover text-[#ff8d50]" href="#" icon={() => <HiPlusCircle className="text-[#ff8d50] w-6 h-6" />}>
                                             Ajouter une tâche
                                         </Sidebar.Item>
                                     </Sidebar.ItemGroup>
