@@ -15,7 +15,7 @@ export function Header() {
 
                         <DarkThemeToggle/>
 
-                    <a href="#" className="text-gray-700 dark:text-gray-300 whitespace-nowrap">Se connecter</a>
+                    <a href="/login" className="text-gray-700 dark:text-gray-300 whitespace-nowrap">Se connecter</a>
                     <Button
                         className="button-primary-color hover:bg-blue-600 text-white px-4 rounded-md focus:outline-none">S'inscrire</Button>
                     <Navbar.Toggle/>
