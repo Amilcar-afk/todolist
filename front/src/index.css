@@ -29,3 +29,7 @@ code {
   outline: none;
   box-shadow: 0 0 0 3px rgba(255, 140, 80, 0.5);
 }
+
+.navbar-item-hover:hover{
+  background-color: #ff8d5045 !important;
+}
