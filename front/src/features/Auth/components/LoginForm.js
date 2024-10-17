@@ -3,13 +3,11 @@ import { DarkThemeToggle, Flowbite } from 'flowbite-react';
 import {useNavigate} from "react-router-dom";
 import {AuthContext} from "../../../contexts/AuthContext.js";
 
-const RegisterForm = () => {
+const LoginForm = () => {
 
-    const {register} = useContext(AuthContext);
+    const {login} = useContext(AuthContext);
     const navigate = useNavigate();
     const [userData, setUserData] = useState({
-        firstname: '',
-        lastname: '',
         email: '',
         password: '',
     });
@@ -25,14 +23,12 @@ const RegisterForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formattedData = {
-            'firstname': userData.firstname,
-            'lastname': userData.lastname,
             'email': userData.email,
             'password': userData.password
         };
-        const responseCode = await register(formattedData);
-        if (responseCode === 201){
-            navigate('/login');
+        const responseCode = await login(formattedData);
+        if (responseCode === 200){
+            navigate('/todolist');
         }
     };
 
@@ -40,7 +36,7 @@ const RegisterForm = () => {
         <Flowbite>
             <div
                 className=" container-form min-h-screen flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
-                <h1 className="text-4xl font-bold mb-6">Inscription</h1>
+                <h1 className="text-4xl font-bold mb-6">Connexion</h1>
 
                 <form className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md" onSubmit={handleSubmit}>
                     <div className="mb-4">
@@ -54,29 +50,6 @@ const RegisterForm = () => {
                         />
                     </div>
 
-                    <div className="flex space-x-4 mb-4">
-                        <div className="w-1/2">
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Prénom</label>
-                            <input
-                                type="text"
-                                name="firstname"
-                                value={userData.firstname}
-                                onChange={handleChange}
-                                className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-                            />
-                        </div>
-
-                        <div className="w-1/2">
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom</label>
-                            <input
-                                type="text"
-                                name="lastname"
-                                value={userData.lastname}
-                                onChange={handleChange}
-                                className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-                            />
-                        </div>
-                    </div>
 
                     <div className="mb-4">
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Mot de
@@ -94,15 +67,15 @@ const RegisterForm = () => {
                         type="submit"
                         className="w-full button-primary-color hover:bg-blue-600 text-white py-2 px-4 rounded-md focus:outline-none"
                     >
-                        S'inscrire
+                        Se connecter
                     </button>
                 </form>
 
                 <div className="mt-4">
                     <p className="text-sm text-gray-600 dark:text-gray-400">
-                        Déjà un compte ?{' '}
-                        <a href="/login" className="text-blue-500 hover:underline">
-                            Connectez-vous
+                        Pas encore de compte ?{' '}
+                        <a href="#" className="text-blue-500 hover:underline">
+                            Inscrivez-vous
                         </a>.
                     </p>
                 </div>
@@ -111,4 +84,4 @@ const RegisterForm = () => {
     );
 }
 
-export default RegisterForm;
+export default LoginForm;

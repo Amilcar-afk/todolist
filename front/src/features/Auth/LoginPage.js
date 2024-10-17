@@ -1,15 +1,15 @@
 import React from 'react';
-import RegisterForm from "./components/RegisterForm";
+import LoginForm from "./components/LoginForm.js";
 import './styles/Auth.css';
 import {Header} from "../Header/Header";
 
-const RegisterPage = () => {
+const LoginPage = () => {
     return (
         <>
             <Header/>
             <div className="container">
                 <section className="form-section bg-gray-100 dark:bg-gray-900">
-                    <RegisterForm/>
+                    <LoginForm/>
                 </section>
                 <section className="image-section bg-gray-100 dark:bg-gray-900">
                     <img className="h-full w-full object-cover" alt='test' src={"todolist3.png"}/>
@@ -19,4 +19,4 @@ const RegisterPage = () => {
     );
 }
 
-export default RegisterPage;
+export default LoginPage;
