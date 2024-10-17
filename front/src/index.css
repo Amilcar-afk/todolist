@@ -19,3 +19,13 @@ code {
 .button-primary-color{
   background-color: #ff8d50 !important;
 }
+
+.button-primary-color:hover {
+  background-color: #ff7040;
+}
+
+.button-primary-color:focus {
+  background-color: #ff7040;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 140, 80, 0.5);
+}
