@@ -1,4 +1,4 @@
-import { Button, Label, Modal, TextInput, Datepicker, Textarea } from "flowbite-react";
+import { Label, Modal, TextInput, Textarea, Datepicker } from "flowbite-react";
 import React, { useState } from "react";
 
 export function NewTaskForm({ openModal, setOpenModal }) {
@@ -13,6 +13,13 @@ export function NewTaskForm({ openModal, setOpenModal }) {
         setTaskData({
             ...taskData,
             [name]: value,
+        });
+    };
+
+    const handleDateChange = (date) => {
+        setTaskData({
+            ...taskData,
+            date: date,
         });
     };
 
@@ -39,6 +46,7 @@ export function NewTaskForm({ openModal, setOpenModal }) {
                                 </div>
                                 <TextInput
                                     id="name"
+                                    name="name"
                                     placeholder="nom"
                                     value={taskData.name}
                                     onChange={handleChange}
@@ -51,6 +59,7 @@ export function NewTaskForm({ openModal, setOpenModal }) {
                                 </div>
                                 <Textarea
                                     id="description"
+                                    name="description"
                                     placeholder="description"
                                     value={taskData.description}
                                     onChange={handleChange}
@@ -62,7 +71,11 @@ export function NewTaskForm({ openModal, setOpenModal }) {
                                 <div className="mb-2 block">
                                     <Label htmlFor="date" value="Date"/>
                                 </div>
-                                <Datepicker minDate={new Date(2023, 0, 1)} maxDate={new Date(2023, 3, 30)}/>
+                                <Datepicker
+                                    selected={taskData.date}
+                                    onChange={handleDateChange}
+                                    minDate={new Date(2023, 0, 1)}
+                                    maxDate={new Date(2023, 11, 31)}/>
                             </div>
 
                             <div className="w-full">
