@@ -11,7 +11,9 @@ const TaskProvider = ({ children }) => {
         try {
             const response = await TaskApi.addTask(task);
             if(response.status === 201){
-                toast.success(`Votre Tâche a bien été créé`);
+                toast.success(`Votre Tâche a bien été créé`, {
+                    theme: 'dark',
+                });
             }
             return response;
         } catch (error) {
@@ -23,12 +25,15 @@ const TaskProvider = ({ children }) => {
         try{
             const response =  await TaskApi.updateTask(id, data);
             if(response.status === 200){
-                toast.success(`Votre Tâche a bien été modifié`);
+                toast.success(`Votre Tâche a bien été modifié`, {
+                    theme: 'dark',
+                });
             }
             return response;
         }catch(error){
-            console.error(error);
-            toast.error(`Erreur lors de la modification de la tâche`);
+            toast.error(`Erreur lors de la modification de la tâche`, {
+                theme: 'dark',
+            });
         }
     }
 
@@ -36,12 +41,15 @@ const TaskProvider = ({ children }) => {
         try{
             const response = await TaskApi.deleteTask(id);
             if(response.status === 204){
-                toast.success(`Votre tâche a bien été supprimé`);
+                toast.success(`Votre tâche a bien été supprimé`, {
+                    theme: 'dark',
+                });
             }
             return response;
         }catch(error){
-            console.error(error);
-            toast.error(`Erreur lors de la suppression de la tâche`);
+            toast.error(`Erreur lors de la suppression de la tâche`, {
+                theme: 'dark',
+            });
         }
     }
 
