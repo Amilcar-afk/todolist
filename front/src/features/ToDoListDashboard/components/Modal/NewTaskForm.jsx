@@ -1,10 +1,12 @@
-import { Label, Modal, TextInput, Textarea, Datepicker } from "flowbite-react";
+import { Label, Modal, TextInput, Textarea } from "flowbite-react";
 import React, { useState } from "react";
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 
 export function NewTaskForm({ openModal, setOpenModal }) {
     const [taskData, setTaskData] = useState({
         name: '',
-        description: '',
+        description: null,
         date: null,
     });
 
@@ -25,6 +27,11 @@ export function NewTaskForm({ openModal, setOpenModal }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const newTask = {
+            name: taskData.name,
+            description: taskData.description,
+            date: taskData.date//.toISOString(),
+        };
 
     };
 
@@ -71,7 +78,7 @@ export function NewTaskForm({ openModal, setOpenModal }) {
                                 <div className="mb-2 block">
                                     <Label htmlFor="date" value="Date"/>
                                 </div>
-                                <Datepicker
+                                <DatePicker
                                     selected={taskData.date}
                                     onChange={handleDateChange}
                                     minDate={new Date(2023, 0, 1)}
