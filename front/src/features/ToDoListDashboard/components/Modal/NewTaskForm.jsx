@@ -1,9 +1,11 @@
 import { Label, Modal, TextInput, Textarea } from "flowbite-react";
-import React, { useState } from "react";
+import React, {useContext, useState} from "react";
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import {TaskContext} from "../../../../contexts/TaskContext";
 
 export function NewTaskForm({ openModal, setOpenModal }) {
+    const { addTask } = useContext(TaskContext);
     const [taskData, setTaskData] = useState({
         name: '',
         description: null,
@@ -32,6 +34,14 @@ export function NewTaskForm({ openModal, setOpenModal }) {
             description: taskData.description,
             date: taskData.date//.toISOString(),
         };
+
+        const request = await addTask(newTask);
+
+        if (request.status === 201) {
+            console.log("task created");
+        }else{
+            console.log("not workinngg");
+        }
 
     };
 

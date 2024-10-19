@@ -5,17 +5,22 @@ import RegisterPage from "./features/Auth/RegisterPage";
 import AuthProvider from "./contexts/AuthContext";
 import LoginPage from "./features/Auth/LoginPage";
 import ToDoListDashboardPage from "./features/ToDoListDashboard/ToDoListDashboardPage";
+import TaskProvider from "./contexts/TaskContext";
+import {ToastContainer} from "react-toastify";
 
 
 function App() {
   return (
       <BrowserRouter>
           <AuthProvider>
-            <Routes>
-                <Route path="/register" element={<RegisterPage/>} />
-                <Route path="/login" element={<LoginPage/>} />
-                <Route path="/todolist" element={<ToDoListDashboardPage/>} />
-            </Routes>
+              <TaskProvider>
+                <Routes>
+                    <Route path="/register" element={<RegisterPage/>} />
+                    <Route path="/login" element={<LoginPage/>} />
+                    <Route path="/todolist" element={<ToDoListDashboardPage/>} />
+                </Routes>
+                <ToastContainer/>
+              </TaskProvider>
           </AuthProvider>
       </BrowserRouter>
   );
