@@ -33,6 +33,10 @@ services:
         tags:
             - { name: doctrine.event_listener, event: postPersist }
 
+    App\EventListener\TaskCreatorListener:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
     App\Controller\:
         resource: '../src/Controller'
         tags: [ 'controller.service_arguments' ]

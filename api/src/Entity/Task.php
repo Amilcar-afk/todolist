@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ApiResource]
 class Task
 {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
