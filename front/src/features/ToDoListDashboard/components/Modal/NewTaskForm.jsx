@@ -32,15 +32,13 @@ export function NewTaskForm({ openModal, setOpenModal }) {
         const newTask = {
             name: taskData.name,
             description: taskData.description,
-            date: taskData.date//.toISOString(),
+            date: taskData.date
         };
 
         const request = await addTask(newTask);
 
         if (request.status === 201) {
-            console.log("task created");
-        }else{
-            console.log("not workinngg");
+            onCloseModal();
         }
 
     };
@@ -92,7 +90,8 @@ export function NewTaskForm({ openModal, setOpenModal }) {
                                     selected={taskData.date}
                                     onChange={handleDateChange}
                                     minDate={new Date(2023, 0, 1)}
-                                    maxDate={new Date(2023, 11, 31)}/>
+                                    maxDate={new Date(2023, 11, 31)}
+                                    className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:placeholder-gray-400"/>
                             </div>
 
                             <div className="w-full">
