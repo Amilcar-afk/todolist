@@ -1,0 +1,5 @@
+.today-task-container{
+    display: flex;
+    justify-content: center;
+    width: 70vw;
+}

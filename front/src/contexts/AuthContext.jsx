@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react';
-import AuthApi from './api/AuthApi.js';
-import UsersApi from './api/UsersApi.js';
+import AuthApi from './api/AuthApi.jsx';
+import UsersApi from './api/UsersApi.jsx';
 
 export const AuthContext = createContext(null);
 
@@ -29,17 +29,17 @@ const AuthProvider = ({ children }) => {
         return false;
     };
 
-    /*const logout = async () => {
+    const logout = async () => {
         try {
             localStorage.removeItem('jwtToken');
             setCurrentUser(null);
         } catch (error) {
             console.error('Error logging out:', error);
         }
-    };*/
+    };
 
     return (
-        <AuthContext.Provider value={{ currentUser, register, login, /*logout*/}}>
+        <AuthContext.Provider value={{ currentUser, register, login, logout}}>
             {children}
         </AuthContext.Provider>
     );
