@@ -7,6 +7,7 @@ import LoginPage from "./features/Auth/LoginPage";
 import ToDoListDashboardPage from "./features/ToDoListDashboard/ToDoListDashboardPage";
 import TaskProvider from "./contexts/TaskContext";
 import {ToastContainer} from "react-toastify";
+import LogoutPage from "./features/Auth/LogoutPage";
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
                 <Routes>
                     <Route path="/register" element={<RegisterPage/>} />
                     <Route path="/login" element={<LoginPage/>} />
+                    <Route path="/logout" element={<LogoutPage/>} />
                     <Route path="/todolist" element={<ToDoListDashboardPage/>} />
                 </Routes>
                 <ToastContainer/>

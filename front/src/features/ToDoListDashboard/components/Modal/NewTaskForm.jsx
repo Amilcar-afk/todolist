@@ -11,6 +11,13 @@ export function NewTaskForm({ openModal, setOpenModal }) {
         description: null,
         date: null,
     });
+    const currentDate = new Date();
+
+    function getEndDate(currentDate, years){
+        const result = new Date(currentDate);
+        result.setFullYear(currentDate.getFullYear() + years);
+        return result;
+    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -78,7 +85,6 @@ export function NewTaskForm({ openModal, setOpenModal }) {
                                     placeholder="description"
                                     value={taskData.description}
                                     onChange={handleChange}
-                                    required
                                 />
                             </div>
 
@@ -89,8 +95,8 @@ export function NewTaskForm({ openModal, setOpenModal }) {
                                 <DatePicker
                                     selected={taskData.date}
                                     onChange={handleDateChange}
-                                    minDate={new Date(2023, 0, 1)}
-                                    maxDate={new Date(2023, 11, 31)}
+                                    minDate={currentDate}
+                                    maxDate={getEndDate(currentDate, 1)}
                                     className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:placeholder-gray-400"/>
                             </div>
 

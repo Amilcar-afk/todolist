@@ -16,6 +16,10 @@ code {
     monospace;
 }
 
+.main-content{
+  padding-top: 40px;
+}
+
 .button-primary-color{
   background-color: #ff8d50 !important;
 }

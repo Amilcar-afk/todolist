@@ -8,17 +8,19 @@ import {
     HiTag
 } from "react-icons/hi";
 import {HiCalendarDays, HiCog6Tooth, HiRectangleStack} from "react-icons/hi2";
+import {useNavigate} from "react-router-dom";
 
 export function SideMenu({ setOpenModal }) {
     const [isOpen, setIsOpen] = useState(true);
     const handleClose = () => setIsOpen(false);
+    const navigate = useNavigate();
 
     return (
         <>
-            <div className="relative min-h-[50vh]">
+            <div className="">
                 <Button
                     onClick={() => setIsOpen(true)}
-                    className="absolute top-0 left-0 m-4 bg-blue-700 hover:bg-blue-800 text-white font-medium rounded-lg text-sm px-4 text-center"
+                    className="menu-button m-4 bg-blue-700 hover:bg-blue-800 text-white font-medium rounded-lg text-sm px-4 text-center"
                 >
                     Menu
                 </Button>
@@ -59,7 +61,7 @@ export function SideMenu({ setOpenModal }) {
                                         <Sidebar.Item className="navbar-item-hover" href="#" icon={() => <HiInformationCircle className="text-[#ff8d50] w-6 h-6" />}>
                                             Aide
                                         </Sidebar.Item>
-                                        <Sidebar.Item className="navbar-item-hover" href="#" icon={() => <HiLogin className="text-[#ff8d50] w-6 h-6" />}>
+                                        <Sidebar.Item onClick={() => navigate("/logout")} className="navbar-item-hover" href="#" icon={() => <HiLogin className="text-[#ff8d50] w-6 h-6" />}>
                                             Se déconnecter
                                         </Sidebar.Item>
                                     </Sidebar.ItemGroup>

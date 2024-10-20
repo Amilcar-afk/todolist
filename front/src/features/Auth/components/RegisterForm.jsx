@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react';
 import { DarkThemeToggle, Flowbite } from 'flowbite-react';
 import {useNavigate} from "react-router-dom";
-import {AuthContext} from "../../../contexts/AuthContext.js";
+import {AuthContext} from "../../../contexts/AuthContext.jsx";
 
 const RegisterForm = () => {
 

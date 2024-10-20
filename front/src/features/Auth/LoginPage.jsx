@@ -1,5 +1,5 @@
 import React from 'react';
-import LoginForm from "./components/LoginForm.js";
+import LoginForm from "./components/LoginForm.jsx";
 import './styles/Auth.css';
 import {Header} from "../Header/Header";
 
