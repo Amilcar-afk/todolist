@@ -26,7 +26,8 @@ class SubTask
     private ?string $description = null;
 
     #[ORM\Column]
-    private ?bool $state = false;
+    #[ORM\JoinColumn(nullable: false)]
+    private ?bool $checked = false;
 
     public function getId(): ?int
     {
@@ -69,14 +70,14 @@ class SubTask
         return $this;
     }
 
-    public function isState(): ?bool
+    public function isChecked(): ?bool
     {
-        return $this->state;
+        return $this->checked;
     }
 
-    public function setState(bool $state): static
+    public function setChecked(bool $checked): static
     {
-        $this->state = $state;
+        $this->checked = $checked;
 
         return $this;
     }

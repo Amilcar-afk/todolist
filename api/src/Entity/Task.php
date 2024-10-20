@@ -30,6 +30,10 @@ class Task
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date = null;
 
+    #[ORM\Column]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?bool $checked = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -79,6 +83,18 @@ class Task
     public function setDate(?\DateTimeInterface $date): static
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function isChecked(): ?bool
+    {
+        return $this->checked;
+    }
+
+    public function setChecked(bool $checked): static
+    {
+        $this->checked = $checked;
 
         return $this;
     }
