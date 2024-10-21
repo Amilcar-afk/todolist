@@ -33,9 +33,9 @@ services:
         tags:
             - { name: doctrine.event_listener, event: postPersist }
 
-    App\EventListener\TaskCreatorListener:
+    App\EventListener\CheckVerifiedUserListener:
         tags:
-            - { name: doctrine.event_listener, event: prePersist }
+            - { name: kernel.event_listener, event: security.authentication.success, method: onAuthenticationSuccess  }
 
     App\Controller\:
         resource: '../src/Controller'
