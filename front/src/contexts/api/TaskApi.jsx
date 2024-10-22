@@ -12,6 +12,9 @@ const TaskApi = {
     deleteTask: async function (id) {
         return sendRequest(taskUrl +`/${id}`, 'DELETE', {}, true, null,  "application/ld+json");
     },
+    getTodayTask: async function (id, date) {
+        return sendRequest(taskUrl + `/?date[after]=${date}&date[before]=${date}`, 'GET', {}, true, null,  "application/ld+json");
+    },
     /*getUserTask: async function (id) {
         return sendRequest(taskUrl +`/${id}`, 'PATCH', {}, true, null,  "application/ld+json");
     },*/

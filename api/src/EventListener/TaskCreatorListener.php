@@ -8,14 +8,14 @@ use Symfony\Bundle\SecurityBundle\Security;
 
 class TaskCreatorListener
 {
-    private $security;
+    private Security $security;
 
     public function __construct(Security $security)
     {
         $this->security = $security;
     }
 
-    public function prePersist(PrePersistEventArgs $args)
+    public function prePersist(PrePersistEventArgs $args): void
     {
         $entity = $args->getObject();
 

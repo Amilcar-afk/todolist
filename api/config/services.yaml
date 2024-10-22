@@ -37,6 +37,15 @@ services:
         tags:
             - { name: kernel.event_listener, event: security.authentication.success, method: onAuthenticationSuccess  }
 
+    App\EventListener\TaskCreatorListener:
+        arguments:
+            $security: '@security.helper'
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    App\DataProvider\TaskCollectionDataProvider:
+            tags: [ 'api_platform.state_provider' ]
+
     App\Controller\:
         resource: '../src/Controller'
         tags: [ 'controller.service_arguments' ]

@@ -4,7 +4,6 @@ namespace App\EventListener;
 
 use App\Entity\User;
 use App\Service\EmailVerifier;
-//use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
