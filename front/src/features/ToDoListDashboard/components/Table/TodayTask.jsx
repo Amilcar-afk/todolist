@@ -1,8 +1,12 @@
 import { Checkbox, Table } from "flowbite-react";
 import "../../styles/TodayTask.css"
+import {useState} from "react";
 
 export function TodayTask() {
+    const [task, setTask] = useState([]);
     const getDate = new Date();
+
+
     return (
         <div className="overflow-x-auto today-task-container">
             <Table hoverable>

@@ -1,6 +1,6 @@
-import React, { createContext, useState } from 'react';
+import React, {createContext, useState} from 'react';
 import TaskApi from './api/TaskApi.jsx';
-import {toast, ToastContainer} from 'react-toastify';
+import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export const TaskContext = createContext(null);
@@ -53,8 +53,18 @@ const TaskProvider = ({ children }) => {
         }
     }
 
+    const displayTodayTask = async (id, date) => {
+        try{
+            return await TaskApi.getTodayTask(date);
+        }catch(error){
+            toast.error(`Erreur lors de la récupération des tâches d'aujourd'hui`, {
+                theme: 'dark',
+            });
+        }
+    }
+
     return (
-        <TaskContext.Provider value={{ addTask, editTask, deleteTask}}>
+        <TaskContext.Provider value={{ addTask, editTask, deleteTask, displayTodayTask}}>
             {children}
         </TaskContext.Provider>
     );
