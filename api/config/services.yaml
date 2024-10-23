@@ -43,8 +43,12 @@ services:
         tags:
             - { name: doctrine.event_listener, event: prePersist }
 
-    App\DataProvider\TaskCollectionDataProvider:
-            tags: [ 'api_platform.state_provider' ]
+    App\State\TaskProvider:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $security: '@security.helper'
+        tags:
+            - { name: 'api_platform.state_provider' }
 
     App\Controller\:
         resource: '../src/Controller'

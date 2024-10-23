@@ -2,16 +2,19 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\TaskRepository;
+use App\State\TaskProvider;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
-#[ApiResource]
 #[ApiFilter(DateFilter::class, properties: ['date'])]
+#[ApiFilter(BooleanFilter::class, properties: ['checked'])]
+#[ApiResource(provider: TaskProvider::class)]
 class Task
 {
 
@@ -33,8 +36,7 @@ class Task
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\Column]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\Column(type: 'boolean', nullable: false)]
     private ?bool $checked = false;
 
     public function getId(): ?int
