@@ -12,8 +12,17 @@ const TaskApi = {
     deleteTask: async function (id) {
         return sendRequest(taskUrl +`/${id}`, 'DELETE', {}, true, null,  "application/ld+json");
     },
-    getTodayTask: async function (id, date) {
-        return sendRequest(taskUrl + `/?date[after]=${date}&date[before]=${date}`, 'GET', {}, true, null,  "application/ld+json");
+    getTasks: async function () {
+        return sendRequest(taskUrl + `?checked=false`, 'GET', {}, true, null,  "application/ld+json");
+    },
+    getTodayTasks: async function (date) {
+        return sendRequest(taskUrl + `?date[after]=${date}&date[before]=${date}&checked=false`, 'GET', {}, true, null,  "application/ld+json");
+    },
+    getTodayCheckedTasks: async function (date) {
+        return sendRequest(taskUrl + `?date[after]=${date}&date[before]=${date}&checked=true`, 'GET', {}, true, null,  "application/ld+json");
+    },
+    getOverdueTasks: async function (date) {
+        return sendRequest(taskUrl + `?date[strictly_before]=${date}&checked=false`, 'GET', {}, true, null,  "application/ld+json");
     },
     /*getUserTask: async function (id) {
         return sendRequest(taskUrl +`/${id}`, 'PATCH', {}, true, null,  "application/ld+json");

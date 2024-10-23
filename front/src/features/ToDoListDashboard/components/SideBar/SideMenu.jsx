@@ -9,10 +9,13 @@ import {
 } from "react-icons/hi";
 import {HiCalendarDays, HiCog6Tooth, HiRectangleStack} from "react-icons/hi2";
 import {useNavigate} from "react-router-dom";
+import {NewTaskForm} from "../Modal/NewTaskForm";
 
 export function SideMenu({ setOpenModal }) {
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
     const handleClose = () => setIsOpen(false);
+
+
     const navigate = useNavigate();
 
     return (
@@ -25,6 +28,7 @@ export function SideMenu({ setOpenModal }) {
                     Menu
                 </Button>
             </div>
+
             <Drawer open={isOpen} onClose={handleClose}>
                 <Drawer.Header title="MENU" titleIcon={() => <></>}/>
                 <Drawer.Items>
@@ -71,6 +75,7 @@ export function SideMenu({ setOpenModal }) {
                     </Sidebar>
                 </Drawer.Items>
             </Drawer>
+
         </>
     );
 }

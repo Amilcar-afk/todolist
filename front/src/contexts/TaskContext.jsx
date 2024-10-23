@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export const TaskContext = createContext(null);
 
 const TaskProvider = ({ children }) => {
-    const [currentTask, setCurrentTask] = useState(null);
+    const [currentTasks, setCurrentTasks] = useState(null);
     const addTask = async (task) => {
         try {
             const response = await TaskApi.addTask(task);
@@ -14,6 +14,8 @@ const TaskProvider = ({ children }) => {
                 toast.success(`Votre Tâche a bien été créé`, {
                     theme: 'dark',
                 });
+                const createdTask = response.data;
+                setCurrentTasks((prevTasks) => [...prevTasks, createdTask])
             }
             return response;
         } catch (error) {
@@ -53,9 +55,11 @@ const TaskProvider = ({ children }) => {
         }
     }
 
-    const displayTodayTask = async (id, date) => {
+    const displayTodayTask = async (date) => {
         try{
-            return await TaskApi.getTodayTask(date);
+            const response = await TaskApi.getTodayTasks(date);
+            setCurrentTasks(response.data.member);
+            return response;
         }catch(error){
             toast.error(`Erreur lors de la récupération des tâches d'aujourd'hui`, {
                 theme: 'dark',
@@ -64,7 +68,7 @@ const TaskProvider = ({ children }) => {
     }
 
     return (
-        <TaskContext.Provider value={{ addTask, editTask, deleteTask, displayTodayTask}}>
+        <TaskContext.Provider value={{ addTask, editTask, deleteTask, displayTodayTask, setCurrentTasks, currentTasks}}>
             {children}
         </TaskContext.Provider>
     );
