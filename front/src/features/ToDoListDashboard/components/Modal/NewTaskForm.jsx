@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import {TaskContext} from "../../../../contexts/TaskContext";
 
-export function NewTaskForm({ openModal, setOpenModal }) {
+export function NewTaskForm({ openModal, setOpenModal, onTaskAdded }) {
     const { addTask } = useContext(TaskContext);
     const [taskData, setTaskData] = useState({
         name: '',
@@ -13,7 +13,7 @@ export function NewTaskForm({ openModal, setOpenModal }) {
     });
     const currentDate = new Date();
 
-    function getEndDate(currentDate, years){
+    function getEndDate(currentDate, years) {
         const result = new Date(currentDate);
         result.setFullYear(currentDate.getFullYear() + years);
         return result;
@@ -47,7 +47,6 @@ export function NewTaskForm({ openModal, setOpenModal }) {
         if (request.status === 201) {
             onCloseModal();
         }
-
     };
 
     const onCloseModal = () => {
@@ -55,63 +54,62 @@ export function NewTaskForm({ openModal, setOpenModal }) {
     };
 
     return (
-        <>
-            <Modal className="bg-transparent" show={openModal} size="md" onClose={onCloseModal} popup>
-                <Modal.Header/>
-                <Modal.Body>
-                    <form onSubmit={handleSubmit}>
-                        <div className="space-y-6">
-                            <h3 className="text-xl font-medium text-gray-900 dark:text-white">Nouvelle tâche</h3>
-                            <div>
-                                <div className="mb-2 block">
-                                    <Label htmlFor="name" value="Nom"/>
-                                </div>
-                                <TextInput
-                                    id="name"
-                                    name="name"
-                                    placeholder="nom"
-                                    value={taskData.name}
-                                    onChange={handleChange}
-                                    required
-                                />
+        <Modal className="bg-transparent" show={openModal} size="md" onClose={onCloseModal} popup>
+            <Modal.Header />
+            <Modal.Body>
+                <form onSubmit={handleSubmit}>
+                    <div className="space-y-6">
+                        <h3 className="text-xl font-medium text-gray-900 dark:text-white">Nouvelle tâche</h3>
+                        <div>
+                            <div className="mb-2 block">
+                                <Label htmlFor="name" value="Nom" />
                             </div>
-                            <div>
-                                <div className="mb-2 block">
-                                    <Label htmlFor="description" value="Description"/>
-                                </div>
-                                <Textarea
-                                    id="description"
-                                    name="description"
-                                    placeholder="description"
-                                    value={taskData.description}
-                                    onChange={handleChange}
-                                />
-                            </div>
-
-                            <div>
-                                <div className="mb-2 block">
-                                    <Label htmlFor="date" value="Date"/>
-                                </div>
-                                <DatePicker
-                                    selected={taskData.date}
-                                    onChange={handleDateChange}
-                                    minDate={currentDate}
-                                    maxDate={getEndDate(currentDate, 1)}
-                                    className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:placeholder-gray-400"/>
-                            </div>
-
-                            <div className="w-full">
-                                <button
-                                    type="submit"
-                                    className="w-full button-primary-color hover:bg-blue-600 text-white py-2 px-4 rounded-md focus:outline-none"
-                                >
-                                    Créer la tâche
-                                </button>
-                            </div>
+                            <TextInput
+                                id="name"
+                                name="name"
+                                placeholder="nom"
+                                value={taskData.name}
+                                onChange={handleChange}
+                                required
+                            />
                         </div>
-                    </form>
-                </Modal.Body>
-            </Modal>
-        </>
+                        <div>
+                            <div className="mb-2 block">
+                                <Label htmlFor="description" value="Description" />
+                            </div>
+                            <Textarea
+                                id="description"
+                                name="description"
+                                placeholder="description"
+                                value={taskData.description}
+                                onChange={handleChange}
+                            />
+                        </div>
+
+                        <div>
+                            <div className="mb-2 block">
+                                <Label htmlFor="date" value="Date" />
+                            </div>
+                            <DatePicker
+                                selected={taskData.date}
+                                onChange={handleDateChange}
+                                minDate={currentDate}
+                                maxDate={getEndDate(currentDate, 1)}
+                                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:placeholder-gray-400"
+                            />
+                        </div>
+
+                        <div className="w-full">
+                            <button
+                                type="submit"
+                                className="w-full button-primary-color hover:bg-blue-600 text-white py-2 px-4 rounded-md focus:outline-none"
+                            >
+                                Créer la tâche
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </Modal.Body>
+        </Modal>
     );
 }
