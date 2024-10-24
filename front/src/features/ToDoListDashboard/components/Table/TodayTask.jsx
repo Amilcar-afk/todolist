@@ -1,18 +1,26 @@
-import { Checkbox, Table } from "flowbite-react";
+import {Button, Checkbox, Table} from "flowbite-react";
 import "../../styles/TodayTask.css"
-import {useContext, useEffect, useState} from "react";
+import {useContext, useState} from "react";
 import {TaskContext} from "../../../../contexts/TaskContext";
-import {NewTaskForm} from "../Modal/NewTaskForm";
+import {DeleteTaskModal} from "../Modal/DeleteTaskModal";
+import { HiTrash, HiPencil } from "react-icons/hi";
 
 export function TodayTask() {
     const currentDate = new Date();
     const { currentTasks } = useContext(TaskContext);
+    const [openModal, setOpenModal] = useState(false);
+    const [selectedTask, setSelectedTask] = useState(null);
+
+    const handleDeleteClick = (task) => {
+        setSelectedTask(task);
+        setOpenModal(true);
+    };
 
     return (
         <div className="overflow-x-auto today-task-container">
             <Table hoverable>
                 <Table.Head>
-                    <Table.HeadCell colSpan="3">Aujourd'hui  {currentDate.getDate() + '/' + currentDate.getMonth() + '/' + currentDate.getFullYear()}</Table.HeadCell>
+                    <Table.HeadCell colSpan="4">Aujourd'hui  {currentDate.getDate() + '/' + currentDate.getMonth() + '/' + currentDate.getFullYear()}</Table.HeadCell>
                 </Table.Head>
                 <Table.Body className="divide-y">
                     {Array.isArray(currentTasks) && currentTasks.length > 0 ? (
@@ -25,9 +33,22 @@ export function TodayTask() {
                                     {t.name}
                                 </Table.Cell>
                                 <Table.Cell>
-                                    <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                                        Edit
-                                    </a>
+                                    <button
+                                        className="text-blue-600 hover:text-blue-800 focus:outline-none"
+                                        aria-label="Modifier"
+                                        onClick={() => console.log('Edit task', t)}
+                                    >
+                                        <HiPencil className="w-6 h-6"/>
+                                    </button>
+                                </Table.Cell>
+                                <Table.Cell>
+                                    <button
+                                        onClick={() => handleDeleteClick(t)}
+                                        className="text-red-600 hover:text-red-800 focus:outline-none"
+                                        aria-label="Supprimer"
+                                    >
+                                        <HiTrash className="w-6 h-6"/>
+                                    </button>
                                 </Table.Cell>
                             </Table.Row>
                         ))
@@ -40,6 +61,13 @@ export function TodayTask() {
                     )}
                 </Table.Body>
             </Table>
+            {selectedTask && (
+                <DeleteTaskModal
+                    openModal={openModal}
+                    setOpenModal={setOpenModal}
+                    task={selectedTask}
+                />
+            )}
         </div>
     );
 }

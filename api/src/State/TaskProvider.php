@@ -28,7 +28,6 @@ final class TaskProvider implements ProviderInterface
      */
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): null|array|object
     {
-        $this->logger->info('TaskProvider is called.' . print_r($context['filters'],true));
 
         $resourceClass = $operation->getClass();
 
@@ -72,6 +71,12 @@ final class TaskProvider implements ProviderInterface
             return $queryBuilder->getQuery()->getResult();
         }
 
-        return $this->entityManager->getRepository(Task::class)->find($uriVariables['id']);
+        $task =  $this->entityManager->getRepository(Task::class)->find($uriVariables['id']);
+
+        if ($task && $task->getCreator() !== $user) {
+            return null;
+        }
+
+        return $task;
     }
 }

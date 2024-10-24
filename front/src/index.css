@@ -37,3 +37,7 @@ code {
 .navbar-item-hover:hover{
   background-color: #ff8d5045 !important;
 }
+
+.modal-backdrop {
+  display: none !important;
+}
