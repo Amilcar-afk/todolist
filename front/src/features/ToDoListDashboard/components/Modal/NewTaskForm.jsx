@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import {TaskContext} from "../../../../contexts/TaskContext";
 
-export function NewTaskForm({ openModal, setOpenModal, onTaskAdded }) {
+export function NewTaskForm({ openModal, setOpenModal }) {
     const { addTask } = useContext(TaskContext);
     const [taskData, setTaskData] = useState({
         name: '',
@@ -54,7 +54,7 @@ export function NewTaskForm({ openModal, setOpenModal, onTaskAdded }) {
     };
 
     return (
-        <Modal className="bg-transparent" show={openModal} size="md" onClose={onCloseModal} popup>
+        <Modal className="bg-transparent" show={openModal} size="md" onClose={onCloseModal} popup backdrop={false}>
             <Modal.Header />
             <Modal.Body>
                 <form onSubmit={handleSubmit}>
