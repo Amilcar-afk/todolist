@@ -25,7 +25,9 @@ const TaskProvider = ({ children }) => {
 
     const editTask = async (id, data) => {
         try{
+            console.log(data);
             const response =  await TaskApi.updateTask(id, data);
+
             if(response.status === 200){
                 toast.success(`Votre Tâche a bien été modifié`, {
                     theme: 'dark',
