@@ -9,7 +9,7 @@ import {
 } from "react-icons/hi";
 import {HiCalendarDays, HiCog6Tooth, HiRectangleStack} from "react-icons/hi2";
 import {useNavigate} from "react-router-dom";
-import {NewTaskForm} from "../Modal/NewTaskForm";
+import {NewTaskFormModal} from "../Modal/NewTaskFormModal";
 
 export function SideMenu({ setOpenModal }) {
     const [isOpen, setIsOpen] = useState(false);

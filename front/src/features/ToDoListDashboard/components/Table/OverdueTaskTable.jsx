@@ -4,12 +4,11 @@ import {useContext, useState} from "react";
 import {TaskContext} from "../../../../contexts/TaskContext";
 import {DeleteTaskModal} from "../Modal/DeleteTaskModal";
 import { HiTrash, HiPencil } from "react-icons/hi";
-import { EditTaskForm } from "../Modal/EditTaskForm";
+import { EditTaskFormModal } from "../Modal/EditTaskFormModal";
 import {TaskDetailsModal} from "../Modal/TaskDetailsModal";
 
-export function TodayTask() {
-    const currentDate = new Date();
-    const { currentTasks, setCurrentTasks } = useContext(TaskContext);
+export function OverdueTodayTaskTable() {
+    const { currentOverdueTasks, setcurrentOverdueTasks } = useContext(TaskContext);
     const [openModal, setOpenModal] = useState(false);
     const [openEditModal, setOpenEditModal] = useState(false);
     const [openDetailsModal, setOpenDetailsModal] = useState(false);
@@ -33,7 +32,7 @@ export function TodayTask() {
     // Gestion du changement de la checkbox (coché ou décoché)
     const handleCheckboxChange = (taskId, checked) => {
         // Mise à jour de l'état de la tâche localement
-        setCurrentTasks((prevTasks) =>
+        setcurrentOverdueTasks((prevTasks) =>
             prevTasks.map((task) =>
                 task.id === taskId ? { ...task, checked: checked } : task
             )
@@ -41,14 +40,14 @@ export function TodayTask() {
     };
 
     return (
-        <div className="overflow-x-auto today-task-container">
+        <div className="overflow-x-auto overdue-task-container  dark:bg-gray-800">
             <Table hoverable>
                 <Table.Head>
-                    <Table.HeadCell colSpan="4">Aujourd'hui  {currentDate.getDate() + '/' + currentDate.getMonth() + '/' + currentDate.getFullYear()}</Table.HeadCell>
+                    <Table.HeadCell colSpan="4">En retard</Table.HeadCell>
                 </Table.Head>
                 <Table.Body className="divide-y">
-                    {Array.isArray(currentTasks) && currentTasks.length > 0 ? (
-                        currentTasks.map((t, index) => (
+                    {Array.isArray(currentOverdueTasks) && currentOverdueTasks.length > 0 ? (
+                        currentOverdueTasks.map((t, index) => (
                             <Table.Row key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800" onClick={() => handleTaskClick(t)}>
                                 <Table.Cell className="p-4">
                                     <Checkbox
@@ -109,7 +108,7 @@ export function TodayTask() {
             )}
 
             {selectedTask && (
-                <EditTaskForm
+                <EditTaskFormModal
                     openModal={openEditModal}
                     setOpenModal={setOpenEditModal}
                     task={selectedTask}

@@ -1,19 +1,21 @@
 import React, {useContext, useEffect, useState} from 'react';
 import { Header } from "../Header/Header.jsx";
 import { SideMenu } from "./components/SideBar/SideMenu.jsx";
-import { NewTaskForm } from "./components/Modal/NewTaskForm.jsx";
-import { TodayTask } from "./components/Table/TodayTask";
+import { NewTaskFormModal } from "./components/Modal/NewTaskFormModal.jsx";
+import { TodayTaskTable } from "./components/Table/TodayTaskTable";
 import './styles/ToDoListDashboard.css';
 import {TaskContext} from "../../contexts/TaskContext";
+import {OverdueTodayTaskTable} from "./components/Table/OverdueTaskTable";
 
 const ToDoListDashboardPage = () => {
     const [openModal, setOpenModal] = useState(false);
-    const { displayTodayTask } = useContext(TaskContext);
+    const { displayTodayTask, displayOverdueTask } = useContext(TaskContext);
     const currentDate = new Date();
     const formattedDate = currentDate.toISOString().split('T')[0];
 
     useEffect(() => {
         displayTodayTask(formattedDate);
+        displayOverdueTask(formattedDate);
     }, []);
 
     return (
@@ -21,9 +23,10 @@ const ToDoListDashboardPage = () => {
             <Header />
             <div className="main-content">
                 <SideMenu setOpenModal={setOpenModal} />
-                <TodayTask />
+                <TodayTaskTable />
+                <OverdueTodayTaskTable/>
             </div>
-            <NewTaskForm openModal={openModal} setOpenModal={setOpenModal}/>
+            <NewTaskFormModal openModal={openModal} setOpenModal={setOpenModal}/>
         </>
     );
 };
