@@ -10,7 +10,7 @@ export function TaskDetailsModal({ task, open, onClose }) {
                     <p className="text-lg font-medium text-gray-900 dark:text-white">
                         {task.name}
                     </p>
-                    <p className="text-base text-gray-500 dark:text-gray-400">
+                    <p className="text-base text-gray-500 dark:text-gray-400 whitespace-pre-line break-words">
                         {task.description || "Pas de description disponible"}
                     </p>
                     <p className="text-base text-gray-500 dark:text-gray-400">
