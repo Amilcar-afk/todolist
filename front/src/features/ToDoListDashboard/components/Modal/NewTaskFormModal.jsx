@@ -1,36 +1,21 @@
 import { Label, Modal, TextInput, Textarea } from "flowbite-react";
-import React, { useContext, useState, useEffect } from "react";
+import React, {useContext, useState} from "react";
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import { TaskContext } from "../../../../contexts/TaskContext";
+import {TaskContext} from "../../../../contexts/TaskContext";
 
-export function EditTaskForm({ openModal, setOpenModal, task }) {
-    const { editTask } = useContext(TaskContext);
+export function NewTaskFormModal({ openModal, setOpenModal }) {
+    const { addTask } = useContext(TaskContext);
     const [taskData, setTaskData] = useState({
-        id: null,
         name: '',
-        description: '',
-        date: new Date()
+        description: null,
+        date: null,
     });
-
     const currentDate = new Date();
-    const formattedDate = currentDate.toISOString().split('T')[0];
 
-    useEffect(() => {
-        if (task) {
-            setTaskData({
-                id: task.id,
-                name: task.name,
-                description: task.description,
-                // Vérifiez que la date est bien un objet Date
-                date: task.date ? new Date(task.date) : new Date()
-            });
-        }
-    }, [task]);  // pour mettre à jour taskData lorsque la tâche change
-
-    function getEndDate(formattedDate, years) {
-        const result = new Date(formattedDate);
-        result.setFullYear(formattedDate.getFullYear() + years);
+    function getEndDate(currentDate, years) {
+        const result = new Date(currentDate);
+        result.setFullYear(currentDate.getFullYear() + years);
         return result;
     }
 
@@ -51,16 +36,15 @@ export function EditTaskForm({ openModal, setOpenModal, task }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const updatedTask = {
-            id: taskData.id,
+        const newTask = {
             name: taskData.name,
             description: taskData.description,
             date: taskData.date ? taskData.date.toISOString() : null
         };
-        console.log(updatedTask);
-        const request = await editTask(updatedTask.id, updatedTask);
 
-        if (request.status === 200) {
+        const request = await addTask(newTask);
+
+        if (request.status === 201) {
             onCloseModal();
         }
     };
@@ -75,7 +59,7 @@ export function EditTaskForm({ openModal, setOpenModal, task }) {
             <Modal.Body>
                 <form onSubmit={handleSubmit}>
                     <div className="space-y-6">
-                        <h3 className="text-xl font-medium text-gray-900 dark:text-white">Modifier la tâche</h3>
+                        <h3 className="text-xl font-medium text-gray-900 dark:text-white">Nouvelle tâche</h3>
                         <div>
                             <div className="mb-2 block">
                                 <Label htmlFor="name" value="Nom" />
@@ -83,7 +67,7 @@ export function EditTaskForm({ openModal, setOpenModal, task }) {
                             <TextInput
                                 id="name"
                                 name="name"
-                                placeholder="Nom"
+                                placeholder="nom"
                                 value={taskData.name}
                                 onChange={handleChange}
                                 required
@@ -96,7 +80,7 @@ export function EditTaskForm({ openModal, setOpenModal, task }) {
                             <Textarea
                                 id="description"
                                 name="description"
-                                placeholder="Description"
+                                placeholder="description"
                                 value={taskData.description}
                                 onChange={handleChange}
                             />
@@ -120,7 +104,7 @@ export function EditTaskForm({ openModal, setOpenModal, task }) {
                                 type="submit"
                                 className="w-full button-primary-color hover:bg-blue-600 text-white py-2 px-4 rounded-md focus:outline-none"
                             >
-                                Modifier la tâche
+                                Créer la tâche
                             </button>
                         </div>
                     </div>

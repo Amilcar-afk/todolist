@@ -7,6 +7,7 @@ export const TaskContext = createContext(null);
 
 const TaskProvider = ({ children }) => {
     const [currentTasks, setCurrentTasks] = useState(null);
+    const [currentOverdueTasks, setCurrentOverdueTasks] = useState(null);
     const addTask = async (task) => {
         try {
             const response = await TaskApi.addTask(task);
@@ -69,8 +70,21 @@ const TaskProvider = ({ children }) => {
         }
     }
 
+
+    const displayOverdueTask = async (date) => {
+        try{
+            const response = await TaskApi.getOverdueTasks(date);
+            setCurrentOverdueTasks(response.data.member);
+            return response;
+        }catch(error){
+            toast.error(`Erreur lors de la récupération des tâches d'aujourd'hui`, {
+                theme: 'dark',
+            });
+        }
+    }
+
     return (
-        <TaskContext.Provider value={{ addTask, editTask, deleteTask, displayTodayTask, setCurrentTasks, currentTasks}}>
+        <TaskContext.Provider value={{ addTask, editTask, deleteTask, displayTodayTask, setCurrentTasks, currentTasks, displayOverdueTask, currentOverdueTasks}}>
             {children}
         </TaskContext.Provider>
     );
