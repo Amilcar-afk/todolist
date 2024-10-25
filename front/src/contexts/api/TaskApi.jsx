@@ -6,8 +6,9 @@ const TaskApi = {
     addTask: async function (task) {
         return sendRequest(taskUrl, 'POST', task, true, null,  "application/ld+json");
     },
-    updateTask: async function (id) {
-        return sendRequest(taskUrl +`/${id}`, 'PATCH', {}, true, null,  "application/ld+json");
+    updateTask: async function (id, data) {
+        console.log(data);
+        return sendRequest(taskUrl +`/${id}`, 'PATCH', {data}, true, null,  "application/merge-patch+json");
     },
     deleteTask: async function (id) {
         return sendRequest(taskUrl +`/${id}`, 'DELETE', {}, true, null,  "application/ld+json");
