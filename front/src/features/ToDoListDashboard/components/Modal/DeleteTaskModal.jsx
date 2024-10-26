@@ -5,7 +5,7 @@ import {TaskContext} from "../../../../contexts/TaskContext";
 
 export function DeleteTaskModal({ openModal, setOpenModal, task }) {
     const [taskToDelete, setTaskToDelete] = useState([]);
-    const { deleteTask, setCurrentTasks } = useContext(TaskContext);
+    const { deleteTask, setCurrentTasks, setCurrentOverdueTasks } = useContext(TaskContext);
 
     const onCloseModal = () => {
         setOpenModal(false);
@@ -18,6 +18,9 @@ export function DeleteTaskModal({ openModal, setOpenModal, task }) {
             const request = await deleteTask(task.id);
             if (request.status === 204) {
                 setCurrentTasks((prevTasks) =>
+                    prevTasks.filter((t) => t.id !== task.id)
+                );
+                setCurrentOverdueTasks((prevTasks) =>
                     prevTasks.filter((t) => t.id !== task.id)
                 );
                 onCloseModal();
