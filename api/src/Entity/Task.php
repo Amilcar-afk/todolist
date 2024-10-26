@@ -6,7 +6,9 @@ use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Patch;
 use App\Repository\TaskRepository;
+use App\State\TaskProcessor;
 use App\State\TaskProvider;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,7 +16,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 #[ApiFilter(DateFilter::class, properties: ['date'])]
 #[ApiFilter(BooleanFilter::class, properties: ['checked'])]
-#[ApiResource(provider: TaskProvider::class)]
+#[ApiResource(
+    provider: TaskProvider::class,
+)]
+
 class Task
 {
 

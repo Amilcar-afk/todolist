@@ -84,7 +84,7 @@ const TaskProvider = ({ children }) => {
     }
 
     return (
-        <TaskContext.Provider value={{ addTask, editTask, deleteTask, displayTodayTask, setCurrentTasks, currentTasks, displayOverdueTask, currentOverdueTasks}}>
+        <TaskContext.Provider value={{ addTask, editTask, deleteTask, displayTodayTask, setCurrentTasks, currentTasks, displayOverdueTask, currentOverdueTasks, setCurrentOverdueTasks }}>
             {children}
         </TaskContext.Provider>
     );

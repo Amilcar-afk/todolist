@@ -54,7 +54,7 @@ export function NewTaskFormModal({ openModal, setOpenModal }) {
     };
 
     return (
-        <Modal className="bg-transparent" show={openModal} size="md" onClose={onCloseModal} popup backdrop={false}>
+        <Modal className="bg-transparent" show={openModal} size="md" onClose={onCloseModal} popup>
             <Modal.Header />
             <Modal.Body>
                 <form onSubmit={handleSubmit}>

@@ -7,6 +7,7 @@ const axiosInstance = axios.create({
 });
 
 const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = true, params = {}, contentType = 'application/json') => {
+    console.log(contentType);
     try {
         return await axiosInstance({
             url: endpoint,
