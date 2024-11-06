@@ -68,6 +68,20 @@ final class TaskProvider implements ProviderInterface
                     ->setParameter('afterDate', $afterDate);
             }
 
+            if (isset($filters['date']['strictly_before'])) {
+                $beforeDate = new \DateTime($filters['date']['strictly_before']);
+                $beforeDate->setTime(23, 59, 59);
+                $queryBuilder->andWhere('t.date < :beforeDate')
+                    ->setParameter('beforeDate', $beforeDate);
+            }
+
+            if (isset($filters['date']['strictly_after'])) {
+                $afterDate = new \DateTime($filters['date']['strictly_after']);
+                $afterDate->setTime(0, 0, 0);
+                $queryBuilder->andWhere('t.date > :afterDate')
+                    ->setParameter('afterDate', $afterDate);
+            }
+
             return $queryBuilder->getQuery()->getResult();
         }
 

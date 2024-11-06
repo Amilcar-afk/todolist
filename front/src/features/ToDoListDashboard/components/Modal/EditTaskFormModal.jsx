@@ -57,7 +57,6 @@ export function EditTaskFormModal({ openModal, setOpenModal, task }) {
             description: taskData.description,
             date: taskData.date ? taskData.date.toISOString() : null
         };
-        console.log(updatedTask);
         const request = await editTask(updatedTask.id, updatedTask);
 
         if (request.status === 200) {
