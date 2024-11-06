@@ -11,12 +11,16 @@ const TaskProvider = ({ children }) => {
     const addTask = async (task) => {
         try {
             const response = await TaskApi.addTask(task);
-            if(response.status === 201){
-                toast.success(`Votre Tâche a bien été créé`, {
+            if (response.status === 201) {
+                toast.success(`Votre Tâche a bien été créée`, {
                     theme: 'dark',
                 });
                 const createdTask = response.data;
-                setCurrentTasks((prevTasks) => [...prevTasks, createdTask])
+                const createdTaskDateOnly = convertToDateOnly(createdTask.date);
+                const currentDateOnly = convertToDateOnly(new Date());
+
+                if (createdTaskDateOnly.getTime() === currentDateOnly.getTime())
+                    setCurrentTasks((prevTasks) => [...prevTasks, createdTask]);
             }
             return response;
         } catch (error) {
@@ -26,7 +30,6 @@ const TaskProvider = ({ children }) => {
 
     const editTask = async (id, data) => {
         try{
-            console.log(data);
             const response =  await TaskApi.updateTask(id, data);
 
             if(response.status === 200){
@@ -81,6 +84,11 @@ const TaskProvider = ({ children }) => {
                 theme: 'dark',
             });
         }
+    }
+
+    function convertToDateOnly(dateString) {
+        const date = new Date(dateString);
+        return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
     }
 
     return (
