@@ -41,3 +41,7 @@ code {
 .modal-backdrop {
   display: none !important;
 }
+
+.element-pointer{
+  cursor:pointer;
+}

@@ -48,14 +48,14 @@ export function OverdueTodayTaskTable() {
                 <Table.Body className="divide-y">
                     {Array.isArray(currentOverdueTasks) && currentOverdueTasks.length > 0 ? (
                         currentOverdueTasks.map((t, index) => (
-                            <Table.Row key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800" onClick={() => handleTaskClick(t)}>
-                                <Table.Cell className="p-4">
+                            <Table.Row key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800" >
+                                <Table.Cell className="element-pointer p-4">
                                     <Checkbox
                                         checked={t.checked}
                                         onChange={(e) => handleCheckboxChange(t.id, e.target.checked)}
                                     />
                                 </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                <Table.Cell className="element-pointer whitespace-nowrap font-medium text-gray-900 dark:text-white" onClick={() => handleTaskClick(t)}>
                                     {t.name}
                                 </Table.Cell>
                                 <Table.Cell>
