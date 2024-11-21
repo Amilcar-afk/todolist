@@ -49,14 +49,14 @@ export function TodayTaskTable() {
                 <Table.Body className="divide-y">
                     {Array.isArray(currentTasks) && currentTasks.length > 0 ? (
                         currentTasks.map((t, index) => (
-                            <Table.Row key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800" onClick={() => handleTaskClick(t)}>
-                                <Table.Cell className="p-4">
+                            <Table.Row key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800" >
+                                <Table.Cell className="p-4 element-pointer" >
                                     <Checkbox
                                         checked={t.checked}
                                         onChange={(e) => handleCheckboxChange(t.id, e.target.checked)}
                                     />
                                 </Table.Cell>
-                                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                <Table.Cell className="element-pointer whitespace-nowrap font-medium text-gray-900 dark:text-white" onClick={() => handleTaskClick(t)}>
                                     {t.name}
                                 </Table.Cell>
                                 <Table.Cell>
