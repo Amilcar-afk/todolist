@@ -8,19 +8,21 @@ export const TaskContext = createContext(null);
 const TaskProvider = ({ children }) => {
     const [currentTasks, setCurrentTasks] = useState(null);
     const [currentOverdueTasks, setCurrentOverdueTasks] = useState(null);
+
     const addTask = async (task) => {
         try {
             const response = await TaskApi.addTask(task);
             if (response.status === 201) {
-                toast.success(`Votre Tâche a bien été créée`, {
-                    theme: 'dark',
-                });
                 const createdTask = response.data;
                 const createdTaskDateOnly = convertToDateOnly(createdTask.date);
                 const currentDateOnly = convertToDateOnly(new Date());
 
                 if (createdTaskDateOnly.getTime() === currentDateOnly.getTime())
                     setCurrentTasks((prevTasks) => [...prevTasks, createdTask]);
+
+                toast.success(`Votre Tâche a bien été créée`, {
+                    theme: 'dark',
+                });
             }
             return response;
         } catch (error) {
@@ -33,6 +35,26 @@ const TaskProvider = ({ children }) => {
             const response =  await TaskApi.updateTask(id, data);
 
             if(response.status === 200){
+                const modifiedTask = response.data;
+                const modifiedTaskDateOnly = convertToDateOnly(modifiedTask.date);
+                const currentDateOnly = convertToDateOnly(new Date());
+
+                setCurrentTasks((prevTasks) => {
+                    const updatedTasks = prevTasks.filter((task) => task.id !== id);
+                    if (modifiedTaskDateOnly.getTime() === currentDateOnly.getTime()) {
+                        updatedTasks.push(modifiedTask);
+                    }
+                    return updatedTasks;
+                });
+    
+                setCurrentOverdueTasks((prevTasks) => {
+                    const updatedTasks = prevTasks.filter((task) => task.id !== id);
+                    if (modifiedTaskDateOnly.getTime() < currentDateOnly.getTime()) {
+                        updatedTasks.push(modifiedTask);
+                    }
+                    return updatedTasks;
+                });
+
                 toast.success(`Votre Tâche a bien été modifié`, {
                     theme: 'dark',
                 });
@@ -90,7 +112,7 @@ const TaskProvider = ({ children }) => {
         const date = new Date(dateString);
         return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
     }
-
+    
     return (
         <TaskContext.Provider value={{ addTask, editTask, deleteTask, displayTodayTask, setCurrentTasks, currentTasks, displayOverdueTask, currentOverdueTasks, setCurrentOverdueTasks }}>
             {children}
