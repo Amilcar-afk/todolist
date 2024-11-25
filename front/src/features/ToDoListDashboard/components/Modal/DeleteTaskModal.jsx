@@ -1,4 +1,4 @@
-import { Button, Modal } from "flowbite-react";
+import { Button, Modal, Spinner } from "flowbite-react";
 import {useContext, useState} from "react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import {TaskContext} from "../../../../contexts/TaskContext";
@@ -6,6 +6,7 @@ import {TaskContext} from "../../../../contexts/TaskContext";
 export function DeleteTaskModal({ openModal, setOpenModal, task }) {
     const [taskToDelete, setTaskToDelete] = useState([]);
     const { deleteTask, setCurrentTasks, setCurrentOverdueTasks } = useContext(TaskContext);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const onCloseModal = () => {
         setOpenModal(false);
@@ -13,7 +14,7 @@ export function DeleteTaskModal({ openModal, setOpenModal, task }) {
 
     const onDeleteTask = async (e) => {
         e.preventDefault();
-
+        setIsSubmitting(true);
         try {
             const request = await deleteTask(task.id);
             if (request.status === 204) {
@@ -27,11 +28,19 @@ export function DeleteTaskModal({ openModal, setOpenModal, task }) {
             }
         } catch (error) {
             console.error("Failed to delete task", error);
+        }  finally {
+            setIsSubmitting(false);
         }
     };
 
     return (
         <>
+
+            {isSubmitting && (
+                <div className="spinner-div fixed inset-0 z-2 bg-black bg-opacity-50 flex items-center justify-center">
+                </div>
+            )}
+        
             <Modal className="bg-transparent" show={openModal} size="md" onClose={onCloseModal} popup backdrop={false}>
                 <Modal.Header />
                 <Modal.Body>
@@ -42,7 +51,11 @@ export function DeleteTaskModal({ openModal, setOpenModal, task }) {
                         </h3>
                         <div className="flex justify-center gap-4">
                             <Button color="failure" onClick={onDeleteTask}>
-                                Oui, je suis sûr
+                                {isSubmitting ? (
+                                    <Spinner size="sm" aria-label="Chargement..." />
+                                ) : (
+                                    "Oui je suis sûre"
+                                )}
                             </Button>
                             <Button color="gray" onClick={onCloseModal}>
                                 Annuler

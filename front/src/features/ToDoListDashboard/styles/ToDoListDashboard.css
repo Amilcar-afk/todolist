@@ -5,3 +5,7 @@
 .menu-button{
     margin-top: 0;
 }
+
+.spinner-div{
+    z-index: 999 !important;
+}
