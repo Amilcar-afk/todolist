@@ -1,5 +1,10 @@
-.main-content{
+.today-task-container{
+    padding-bottom: 70px;
+}
+
+.div-row{
     display: flex;
+    flex-direction: column;
 }
 
 .menu-button{

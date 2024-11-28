@@ -17,7 +17,9 @@ code {
 }
 
 .main-content{
+  display: flex;
   padding-top: 40px;
+  justify-content: space-around;
 }
 
 .button-primary-color{
