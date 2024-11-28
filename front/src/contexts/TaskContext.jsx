@@ -8,6 +8,7 @@ export const TaskContext = createContext(null);
 const TaskProvider = ({ children }) => {
     const [currentTasks, setCurrentTasks] = useState(null);
     const [currentOverdueTasks, setCurrentOverdueTasks] = useState(null);
+    const [futureTasks, setFutureTasks] = useState(null);
 
     const addTask = async (task) => {
         try {
@@ -19,6 +20,8 @@ const TaskProvider = ({ children }) => {
 
                 if (createdTaskDateOnly.getTime() === currentDateOnly.getTime())
                     setCurrentTasks((prevTasks) => [...prevTasks, createdTask]);
+                else if(createdTaskDateOnly.getTime() > currentDateOnly.getTime())
+                    setFutureTasks((prevTasks) => [...prevTasks, createdTask]);
 
                 toast.success(`Votre Tâche a bien été créée`, {
                     theme: 'dark',
@@ -50,6 +53,14 @@ const TaskProvider = ({ children }) => {
                 setCurrentOverdueTasks((prevTasks) => {
                     const updatedTasks = prevTasks.filter((task) => task.id !== id);
                     if (modifiedTaskDateOnly.getTime() < currentDateOnly.getTime()) {
+                        updatedTasks.push(modifiedTask);
+                    }
+                    return updatedTasks;
+                });
+
+                setFutureTasks((prevTasks) => {
+                    const updatedTasks = prevTasks.filter((task) => task.id !== id);
+                    if (modifiedTaskDateOnly.getTime() > currentDateOnly.getTime()) {
                         updatedTasks.push(modifiedTask);
                     }
                     return updatedTasks;
@@ -108,13 +119,25 @@ const TaskProvider = ({ children }) => {
         }
     }
 
+    const displayFutureTask = async (date) => {
+        try{
+            const response = await TaskApi.getFutureTasks(date);
+            setFutureTasks(response.data.member);
+            return response;
+        }catch(error){
+            toast.error(`Erreur lors de la récupération des tâches d'aujourd'hui`, {
+                theme: 'dark',
+            });
+        }
+    }
+
     function convertToDateOnly(dateString) {
         const date = new Date(dateString);
         return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
     }
     
     return (
-        <TaskContext.Provider value={{ addTask, editTask, deleteTask, displayTodayTask, setCurrentTasks, currentTasks, displayOverdueTask, currentOverdueTasks, setCurrentOverdueTasks }}>
+        <TaskContext.Provider value={{ addTask, editTask, deleteTask, displayTodayTask, setCurrentTasks, currentTasks, displayOverdueTask, currentOverdueTasks, setCurrentOverdueTasks, displayFutureTask, futureTasks, setFutureTasks }}>
             {children}
         </TaskContext.Provider>
     );

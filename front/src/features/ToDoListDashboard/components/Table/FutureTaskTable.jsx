@@ -7,8 +7,9 @@ import { HiTrash, HiPencil } from "react-icons/hi";
 import { EditTaskFormModal } from "../Modal/EditTaskFormModal";
 import {TaskDetailsModal} from "../Modal/TaskDetailsModal";
 
-export function OverdueTodayTaskTable() {
-    const { currentOverdueTasks, setcurrentOverdueTasks } = useContext(TaskContext);
+export function FutureTaskTable() {
+    const currentDate = new Date();
+    const { futureTasks, setFutureTasks } = useContext(TaskContext);
     const [openModal, setOpenModal] = useState(false);
     const [openEditModal, setOpenEditModal] = useState(false);
     const [openDetailsModal, setOpenDetailsModal] = useState(false);
@@ -32,7 +33,7 @@ export function OverdueTodayTaskTable() {
     // Gestion du changement de la checkbox (coché ou décoché)
     const handleCheckboxChange = (taskId, checked) => {
         // Mise à jour de l'état de la tâche localement
-        setcurrentOverdueTasks((prevTasks) =>
+        setFutureTasks((prevTasks) =>
             prevTasks.map((task) =>
                 task.id === taskId ? { ...task, checked: checked } : task
             )
@@ -40,16 +41,16 @@ export function OverdueTodayTaskTable() {
     };
 
     return (
-        <div className="overflow-x-auto overdue-task-container  dark:bg-gray-800">
+        <div className="overflow-x-auto today-task-container dark:bg-gray-800">
             <Table hoverable>
                 <Table.Head>
-                    <Table.HeadCell colSpan="4">En retard</Table.HeadCell>
+                    <Table.HeadCell colSpan="4">Prochainement</Table.HeadCell>
                 </Table.Head>
                 <Table.Body className="divide-y">
-                    {Array.isArray(currentOverdueTasks) && currentOverdueTasks.length > 0 ? (
-                        currentOverdueTasks.map((t, index) => (
+                    {Array.isArray(futureTasks) && futureTasks.length > 0 ? (
+                        futureTasks.map((t, index) => (
                             <Table.Row key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800" >
-                                <Table.Cell className="element-pointer p-4">
+                                <Table.Cell className="p-4 element-pointer" >
                                     <Checkbox
                                         checked={t.checked}
                                         onChange={(e) => handleCheckboxChange(t.id, e.target.checked)}
@@ -84,7 +85,7 @@ export function OverdueTodayTaskTable() {
                     ) : (
                         <Table.Row>
                             <Table.Cell colSpan="3" className="text-center">
-                                Aucune tâche en retard.
+                                Aucune tâche à venir.
                             </Table.Cell>
                         </Table.Row>
                     )}

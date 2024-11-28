@@ -21,6 +21,9 @@ const TaskApi = {
     getOverdueTasks: async function (date) {
         return sendRequest(taskUrl + `?date[strictly_before]=${date}&checked=false`, 'GET', {}, true, null,  "application/ld+json");
     },
+    getFutureTasks: async function (date) {
+        return sendRequest(taskUrl + `?date[strictly_after]=${date}&checked=false`, 'GET', {}, true, null,  "application/ld+json");
+    },
     getTodayCheckedTasks: async function (date) {
         return sendRequest(taskUrl + `?date[after]=${date}&date[before]=${date}&checked=true`, 'GET', {}, true, null,  "application/ld+json");
     },
