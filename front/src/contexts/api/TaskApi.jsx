@@ -16,13 +16,13 @@ const TaskApi = {
         return sendRequest(taskUrl + `?checked=false`, 'GET', {}, true, null,  "application/ld+json");
     },
     getTodayTasks: async function (date) {
-        return sendRequest(taskUrl + `?date[after]=${date}&date[before]=${date}&checked=false`, 'GET', {}, true, null,  "application/ld+json");
+        return sendRequest(taskUrl + `?date[after]=${date}&date[before]=${date}`, 'GET', {}, true, null,  "application/ld+json");
     },
     getOverdueTasks: async function (date) {
         return sendRequest(taskUrl + `?date[strictly_before]=${date}&checked=false`, 'GET', {}, true, null,  "application/ld+json");
     },
     getFutureTasks: async function (date) {
-        return sendRequest(taskUrl + `?date[strictly_after]=${date}&checked=false`, 'GET', {}, true, null,  "application/ld+json");
+        return sendRequest(taskUrl + `?date[strictly_after]=${date}`, 'GET', {}, true, null,  "application/ld+json");
     },
     getTodayCheckedTasks: async function (date) {
         return sendRequest(taskUrl + `?date[after]=${date}&date[before]=${date}&checked=true`, 'GET', {}, true, null,  "application/ld+json");

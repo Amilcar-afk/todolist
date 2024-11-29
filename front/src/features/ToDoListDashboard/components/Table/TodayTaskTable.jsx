@@ -9,7 +9,7 @@ import {TaskDetailsModal} from "../Modal/TaskDetailsModal";
 
 export function TodayTaskTable() {
     const currentDate = new Date();
-    const { currentTasks, setCurrentTasks } = useContext(TaskContext);
+    const { currentTasks, setCurrentTasks, editTask } = useContext(TaskContext);
     const [openModal, setOpenModal] = useState(false);
     const [openEditModal, setOpenEditModal] = useState(false);
     const [openDetailsModal, setOpenDetailsModal] = useState(false);
@@ -30,14 +30,20 @@ export function TodayTaskTable() {
         setOpenDetailsModal(true);
     };
 
-    // Gestion du changement de la checkbox (coché ou décoché)
-    const handleCheckboxChange = (taskId, checked) => {
-        // Mise à jour de l'état de la tâche localement
+    const handleCheckboxChange = async (taskId, checked) => {
         setCurrentTasks((prevTasks) =>
             prevTasks.map((task) =>
                 task.id === taskId ? { ...task, checked: checked } : task
             )
         );
+
+        try {
+            const request = await editTask(taskId, {"checked": checked});
+        } catch (error) {
+            console.error("Erreur lors de la modification de la tâche", error);
+        } finally {
+            //setIsSubmitting(false);
+        }
     };
 
     return (
