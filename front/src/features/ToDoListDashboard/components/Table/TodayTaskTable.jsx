@@ -1,4 +1,4 @@
-import {Checkbox, Table} from "flowbite-react";
+import {Checkbox, Table, Progress} from "flowbite-react";
 import "../../styles/TodayTask.css"
 import {useContext, useState} from "react";
 import {TaskContext} from "../../../../contexts/TaskContext";
@@ -14,6 +14,7 @@ export function TodayTaskTable() {
     const [openEditModal, setOpenEditModal] = useState(false);
     const [openDetailsModal, setOpenDetailsModal] = useState(false);
     const [selectedTask, setSelectedTask] = useState(null);
+    const [progress, setProgress] = useState(0);
 
     const handleDeleteClick = (task) => {
         setSelectedTask(task);
@@ -31,11 +32,19 @@ export function TodayTaskTable() {
     };
 
     const handleCheckboxChange = async (taskId, checked) => {
-        setCurrentTasks((prevTasks) =>
-            prevTasks.map((task) =>
+        setCurrentTasks((prevTasks) => {
+            const updatedTasks = prevTasks.map((task) =>
                 task.id === taskId ? { ...task, checked: checked } : task
-            )
-        );
+            );
+
+            const completedTasks = updatedTasks.filter((task) => task.checked).length;
+            const totalTasks = updatedTasks.length;
+            setProgress((completedTasks / totalTasks) * 100);
+
+            return updatedTasks;
+        });
+
+        
 
         try {
             const request = await editTask(taskId, {"checked": checked});
@@ -50,7 +59,8 @@ export function TodayTaskTable() {
         <div className="overflow-x-auto today-task-container dark:bg-gray-800">
             <Table hoverable>
                 <Table.Head>
-                    <Table.HeadCell colSpan="4">Aujourd'hui  {currentDate.getDate() + '/' + currentDate.getMonth() + '/' + currentDate.getFullYear()}</Table.HeadCell>
+                    <Table.HeadCell colSpan="2">Aujourd'hui  {currentDate.getDate() + '/' + currentDate.getMonth() + '/' + currentDate.getFullYear()}</Table.HeadCell>
+                    <Table.HeadCell colSpan="4"><Progress className="progress-bar dark:bg-gray-800" progress={progress} color="dark" /></Table.HeadCell>
                 </Table.Head>
                 <Table.Body className="divide-y">
                     {Array.isArray(currentTasks) && currentTasks.length > 0 ? (
