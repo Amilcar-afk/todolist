@@ -42,29 +42,35 @@ const TaskProvider = ({ children }) => {
                 const modifiedTaskDateOnly = convertToDateOnly(modifiedTask.date);
                 const currentDateOnly = convertToDateOnly(new Date());
 
-                setCurrentTasks((prevTasks) => {
-                    const updatedTasks = prevTasks.filter((task) => task.id !== id);
-                    if (modifiedTaskDateOnly.getTime() === currentDateOnly.getTime()) {
-                        updatedTasks.push(modifiedTask);
-                    }
-                    return updatedTasks;
-                });
+                setCurrentTasks((prevTasks) =>
+                    prevTasks.map((task) =>
+                        task.id === id && modifiedTaskDateOnly.getTime() === currentDateOnly.getTime()
+                            ? { ...task, ...modifiedTask }
+                            : task
+                    ).filter((task) =>
+                        convertToDateOnly(task.date).getTime() === currentDateOnly.getTime()
+                    )
+                );
     
-                setCurrentOverdueTasks((prevTasks) => {
-                    const updatedTasks = prevTasks.filter((task) => task.id !== id);
-                    if (modifiedTaskDateOnly.getTime() < currentDateOnly.getTime()) {
-                        updatedTasks.push(modifiedTask);
-                    }
-                    return updatedTasks;
-                });
+                setCurrentOverdueTasks((prevTasks) =>
+                    prevTasks.map((task) =>
+                        task.id === id && modifiedTaskDateOnly.getTime() < currentDateOnly.getTime()
+                            ? { ...task, ...modifiedTask }
+                            : task
+                    ).filter((task) =>
+                        convertToDateOnly(task.date).getTime() < currentDateOnly.getTime()
+                    )
+                );
 
-                setFutureTasks((prevTasks) => {
-                    const updatedTasks = prevTasks.filter((task) => task.id !== id);
-                    if (modifiedTaskDateOnly.getTime() > currentDateOnly.getTime()) {
-                        updatedTasks.push(modifiedTask);
-                    }
-                    return updatedTasks;
-                });
+                setFutureTasks((prevTasks) =>
+                    prevTasks.map((task) =>
+                        task.id === id && modifiedTaskDateOnly.getTime() > currentDateOnly.getTime()
+                            ? { ...task, ...modifiedTask }
+                            : task
+                    ).filter((task) =>
+                        convertToDateOnly(task.date).getTime() > currentDateOnly.getTime()
+                    )
+                );
 
                 toast.success(`Votre Tâche a bien été modifié`, {
                     theme: 'dark',
