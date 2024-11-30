@@ -14,3 +14,23 @@
 .spinner-div{
     z-index: 999 !important;
 }
+
+.task-checked {
+    text-decoration: line-through;
+    background-color: rgba(128, 128, 128, 0.1);
+    color: gray;
+    opacity: 0.7;
+    transition: all 0.3s ease-in-out;
+}
+
+.task-unchecked {
+    text-decoration: none;
+    background-color: transparent;
+    color: inherit;
+    opacity: 1;
+    transition: all 0.3s ease-in-out;
+}
+
+.progress-bar-container{
+    text-align: center;
+}
