@@ -60,19 +60,28 @@ export function TodayTaskTable() {
             <Table hoverable>
                 <Table.Head>
                     <Table.HeadCell colSpan="2">Aujourd'hui  {currentDate.getDate() + '/' + currentDate.getMonth() + '/' + currentDate.getFullYear()}</Table.HeadCell>
-                    <Table.HeadCell colSpan="4"><Progress className="progress-bar dark:bg-gray-800" progress={progress} color="dark" /></Table.HeadCell>
+                    <Table.HeadCell colSpan="4" className="progress-bar-container">
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {Math.round(progress)}%
+                        </span>
+                        <Progress className="progress-bar dark:bg-gray-800" progress={progress} color="dark" />
+                    </Table.HeadCell>
                 </Table.Head>
                 <Table.Body className="divide-y">
                     {Array.isArray(currentTasks) && currentTasks.length > 0 ? (
                         currentTasks.map((t, index) => (
-                            <Table.Row key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800" >
+                            <Table.Row key={index} className={`bg-white dark:border-gray-700 dark:bg-gray-800 ${
+                                t.checked ? 'task-checked' : 'task-unchecked'
+                            }`} >
                                 <Table.Cell className="p-4 element-pointer" >
                                     <Checkbox
                                         checked={t.checked}
                                         onChange={(e) => handleCheckboxChange(t.id, e.target.checked)}
                                     />
                                 </Table.Cell>
-                                <Table.Cell className="element-pointer whitespace-nowrap font-medium text-gray-900 dark:text-white" onClick={() => handleTaskClick(t)}>
+                                <Table.Cell 
+                                    className="element-pointer whitespace-nowrap font-medium text-gray-900 dark:text-white"
+                                    onClick={() => handleTaskClick(t)}>
                                     {t.name}
                                 </Table.Cell>
                                 <Table.Cell>
