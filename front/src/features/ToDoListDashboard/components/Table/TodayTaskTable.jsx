@@ -1,6 +1,6 @@
 import {Checkbox, Table, Progress} from "flowbite-react";
 import "../../styles/TodayTask.css"
-import {useContext, useState} from "react";
+import {useContext, useState, useEffect} from "react";
 import {TaskContext} from "../../../../contexts/TaskContext";
 import {DeleteTaskModal} from "../Modal/DeleteTaskModal";
 import { HiTrash, HiPencil } from "react-icons/hi";
@@ -15,6 +15,16 @@ export function TodayTaskTable() {
     const [openDetailsModal, setOpenDetailsModal] = useState(false);
     const [selectedTask, setSelectedTask] = useState(null);
     const [progress, setProgress] = useState(0);
+
+    useEffect(() => {
+        if (Array.isArray(currentTasks) && currentTasks.length > 0) {
+            const completedTasks = currentTasks.filter((task) => task.checked).length;
+            const totalTasks = currentTasks.length;
+            setProgress((completedTasks / totalTasks) * 100);
+        } else {
+            setProgress(0);
+        }
+    }, [currentTasks]);
 
     const handleDeleteClick = (task) => {
         setSelectedTask(task);
