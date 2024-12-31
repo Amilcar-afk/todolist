@@ -27,10 +27,10 @@ final class TaskDataPersister implements ProcessorInterface
             return $data;
         }
 
-        // Ajoutez ici toute logique spécifique avant la sauvegarde
+        // Ajoute ici toute logique spécifique avant la sauvegarde
         $user = $this->security->getUser();
         if ($user) {
-            $data->setCreator($user); // Ajustez si nécessaire
+            $data->setCreator($user);
         }
 
         $this->entityManager->persist($data);
