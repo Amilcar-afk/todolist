@@ -9,6 +9,7 @@ const TaskProvider = ({ children }) => {
     const [currentTasks, setCurrentTasks] = useState(null);
     const [currentOverdueTasks, setCurrentOverdueTasks] = useState(null);
     const [futureTasks, setFutureTasks] = useState(null);
+    const [userTasks, setUserTasks] = useState(null);
 
     const addTask = async (task) => {
         try {
@@ -137,13 +138,43 @@ const TaskProvider = ({ children }) => {
         }
     }
 
+    const getUserTasks = async () => {
+        try{
+            const response = await TaskApi.getTasks();
+            setUserTasks(response.data.member);
+            console.log(userTasks);
+            console.log("fefeef");
+            
+            return response;
+        }catch(error){
+            toast.error(`Erreur lors de la récupération des tâches`, {
+                theme: 'dark',
+            });
+        }
+    }
+
     function convertToDateOnly(dateString) {
         const date = new Date(dateString);
         return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
     }
     
     return (
-        <TaskContext.Provider value={{ addTask, editTask, deleteTask, displayTodayTask, setCurrentTasks, currentTasks, displayOverdueTask, currentOverdueTasks, setCurrentOverdueTasks, displayFutureTask, futureTasks, setFutureTasks }}>
+        <TaskContext.Provider value={{ 
+            addTask, 
+            editTask, 
+            deleteTask, 
+            displayTodayTask, 
+            setCurrentTasks, 
+            currentTasks, 
+            displayOverdueTask, 
+            currentOverdueTasks, 
+            setCurrentOverdueTasks, 
+            displayFutureTask, 
+            futureTasks, 
+            setFutureTasks, 
+            getUserTasks, 
+            userTasks 
+        }}>
             {children}
         </TaskContext.Provider>
     );

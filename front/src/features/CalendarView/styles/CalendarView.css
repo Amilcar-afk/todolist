@@ -1,0 +1,32 @@
+.css-mc4lx4-MuiTableCell-root.MuiTableCell-body:nth-of-type(8n+1){
+    display: none;
+}
+
+.css-77bg8d-MuiTableCell-root.MuiTableCell-head:nth-of-type(1){
+    display: none;
+}
+
+.css-122iix2-MuiTableCell-root.MuiTableCell-body:nth-of-type(1){
+    display: none;
+}
+
+.css-c82uzy-MuiTableCell-root.MuiTableCell-head:nth-of-type(1) {
+    border-left: 0px !important;
+    display: none;
+}
+
+/*.azerty, .azerty * {
+    background-color: rgb(31 41 55 / var(--tw-bg-opacity)) !important;
+    color: white !important;
+    border-color: grey !important;
+}
+
+.MuiPaper-root:has([data-id="event-1"]) {
+    background-color: #f28f6a !important;
+    border: 2px solid #d9534f;
+  }
+  
+  .MuiPaper-root:has([data-id="event-2"]) {
+    background-color: #099ce5 !important;
+    border: 2px solid #066b99;
+  }*/

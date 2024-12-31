@@ -30,9 +30,7 @@ export function FutureTaskTable() {
         setOpenDetailsModal(true);
     };
 
-    // Gestion du changement de la checkbox (coché ou décoché)
     const handleCheckboxChange = (taskId, checked) => {
-        // Mise à jour de l'état de la tâche localement
         setFutureTasks((prevTasks) =>
             prevTasks.map((task) =>
                 task.id === taskId ? { ...task, checked: checked } : task

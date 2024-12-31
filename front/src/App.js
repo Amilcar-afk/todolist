@@ -8,11 +8,14 @@ import ToDoListDashboardPage from "./features/ToDoListDashboard/ToDoListDashboar
 import TaskProvider from "./contexts/TaskContext";
 import {ToastContainer} from "react-toastify";
 import LogoutPage from "./features/Auth/LogoutPage";
+import CalendarViewPage from "./features/CalendarView/CalendarViewPage"
+import HeaderProvider from './contexts/HeaderContext';
 
 
 function App() {
   return (
       <BrowserRouter>
+        <HeaderProvider>
           <AuthProvider>
               <TaskProvider>
                 <Routes>
@@ -20,10 +23,12 @@ function App() {
                     <Route path="/login" element={<LoginPage/>} />
                     <Route path="/logout" element={<LogoutPage/>} />
                     <Route path="/todolist" element={<ToDoListDashboardPage/>} />
+                    <Route path="/calendar" element={<CalendarViewPage/>} />
                 </Routes>
                 <ToastContainer/>
               </TaskProvider>
           </AuthProvider>
+        </HeaderProvider>
       </BrowserRouter>
   );
 }
