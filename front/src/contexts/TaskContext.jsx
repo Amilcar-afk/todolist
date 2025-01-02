@@ -141,10 +141,7 @@ const TaskProvider = ({ children }) => {
     const getUserTasks = async () => {
         try{
             const response = await TaskApi.getTasks();
-            setUserTasks(response.data.member);
-            console.log(userTasks);
-            console.log("fefeef");
-            
+            setUserTasks(response.data.member);      
             return response;
         }catch(error){
             toast.error(`Erreur lors de la récupération des tâches`, {

@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import { Header } from "../Header/Header.jsx";
-import { SideMenu } from "./components/SideBar/SideMenu.jsx";
+import { SideMenu } from "../SideBar/SideMenu.jsx";
 import { NewTaskFormModal } from "./components/Modal/NewTaskFormModal.jsx";
 import { TodayTaskTable } from "./components/Table/TodayTaskTable";
 import './styles/ToDoListDashboard.css';
@@ -24,7 +24,7 @@ const ToDoListDashboardPage = () => {
         <>
             <Header />
             <div className="main-content">
-            <SideMenu setOpenModal={setOpenModal} />
+                <SideMenu setOpenModal={setOpenModal} />
                 <div className="div-row">
                     <TodayTaskTable />
                     <FutureTaskTable />
