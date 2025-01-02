@@ -3,9 +3,11 @@
 
 import {Button, DarkThemeToggle, Navbar} from "flowbite-react";
 import React, { useContext } from "react";
-import { HeaderContext } from "../../contexts/HeaderContext";
+import { AuthContext } from "../../contexts/AuthContext";
 
 export function Header() {
+    const isLoggedIn = !!localStorage.getItem('jwtToken');
+
     return (
         <header>
             <Navbar fluid>
@@ -14,9 +16,17 @@ export function Header() {
                 </Navbar.Brand>
                 <div className="flex items-center space-x-4 md:order-2">
                     <DarkThemeToggle/>
-                    <a href="/login" className="text-gray-700 dark:text-gray-300 whitespace-nowrap">Se connecter</a>
-                    <Button
-                        className="button-primary-color hover:bg-blue-600 text-white px-4 rounded-md focus:outline-none">S'inscrire</Button>
+                    {isLoggedIn ? (
+                        <a href="/login" className="text-gray-700 dark:text-gray-300 whitespace-nowrap">Se déconnecter</a>
+                    ) : (
+                        <>
+                            <a href="/login" className="text-gray-700 dark:text-gray-300 whitespace-nowrap">Se connecter</a>
+                            <Button
+                                className="button-primary-color hover:bg-blue-600 text-white px-4 rounded-md focus:outline-none">
+                                S'inscrire
+                            </Button>
+                        </>
+                    )}
                     <Navbar.Toggle/>
                 </div>
                 <Navbar.Collapse>
