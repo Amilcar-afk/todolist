@@ -15,20 +15,20 @@ import HeaderProvider from './contexts/HeaderContext';
 function App() {
   return (
       <BrowserRouter>
-        <HeaderProvider>
-          <AuthProvider>
-              <TaskProvider>
-                <Routes>
-                    <Route path="/register" element={<RegisterPage/>} />
-                    <Route path="/login" element={<LoginPage/>} />
-                    <Route path="/logout" element={<LogoutPage/>} />
-                    <Route path="/todolist" element={<ToDoListDashboardPage/>} />
-                    <Route path="/calendar" element={<CalendarViewPage/>} />
-                </Routes>
-                <ToastContainer/>
-              </TaskProvider>
-          </AuthProvider>
-        </HeaderProvider>
+        <AuthProvider>
+          <HeaderProvider>
+            <TaskProvider>
+              <Routes>
+                <Route path="/register" element={<RegisterPage/>} />
+                <Route path="/login" element={<LoginPage/>} />
+                <Route path="/logout" element={<LogoutPage/>} />
+                <Route path="/todolist" element={<ToDoListDashboardPage/>} />
+                <Route path="/calendar" element={<CalendarViewPage/>} />
+              </Routes>
+              <ToastContainer/>
+            </TaskProvider>
+          </HeaderProvider>
+        </AuthProvider>
       </BrowserRouter>
   );
 }
