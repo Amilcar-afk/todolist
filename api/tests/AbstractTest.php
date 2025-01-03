@@ -5,11 +5,6 @@ namespace App\Tests;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use ApiPlatform\Symfony\Bundle\Test\Client;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 abstract class AbstractTest extends ApiTestCase
 {
@@ -22,13 +17,6 @@ abstract class AbstractTest extends ApiTestCase
         self::bootKernel();
     }
 
-    /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     */
     protected function createClientWithCredentials($token = null): Client
     {
         $token = $token ?: $this->getToken();
@@ -36,13 +24,8 @@ abstract class AbstractTest extends ApiTestCase
         return static::createClient([], ['headers' => ['authorization' => 'Bearer '.$token]]);
     }
 
-
     /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
+     * Use other credentials if needed.
      */
     protected function getToken($body = []): string
     {
