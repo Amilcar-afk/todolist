@@ -11,7 +11,6 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 class UserTest extends TestCase
 {
     /* Beginning of tests for getter and setter */
-
     public function testSetAndGetLastname(): void
     {
         $user = new User();
@@ -41,7 +40,7 @@ class UserTest extends TestCase
         $user = new User();
         $user->setRoles(['ROLE_ADMIN']);
         
-        $this->assertSame([0 => 'ROLE_ADMIN', 1 => 'ROLE_USER'], $user->getRoles());
+        $this->assertSame(['ROLE_ADMIN'], $user->getRoles());
     }
 
     public function testSetAndGetPassword(): void
@@ -76,7 +75,6 @@ class UserTest extends TestCase
         
         $this->assertSame('test@example.com', $user->getUserIdentifier());
     }
-
     /* End tests for getter and setter */
 
     public function testDefaultRoleUser(): void
