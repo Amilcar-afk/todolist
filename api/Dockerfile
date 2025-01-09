@@ -10,7 +10,9 @@ RUN apt-get update && apt-get install -y \
     libicu-dev \
     libzip-dev \
     libpq-dev \
-    && docker-php-ext-install intl zip opcache pdo pdo_pgsql
+    && docker-php-ext-install intl zip opcache pdo pdo_pgsql \
+    && pecl install xdebug \
+    && docker-php-ext-enable xdebug
 
 # Installer Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -29,6 +31,15 @@ COPY . .
 
 # Installer les dépendances PHP de l'API
 RUN composer install --no-interaction --prefer-dist --no-scripts --no-progress
+
+# Configurer Xdebug pour le débogage
+RUN echo "xdebug.mode=debug" > /usr/local/etc/php/conf.d/99-xdebug.ini \
+    && echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/99-xdebug.ini \
+    && echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/99-xdebug.ini \
+    && echo "xdebug.client_port=9003" >> /usr/local/etc/php/conf.d/99-xdebug.ini \
+    && echo "xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/conf.d/99-xdebug.ini \
+    && echo "xdebug.log=/var/www/html/xdebug.log" >> /usr/local/etc/php/conf.d/99-xdebug.ini
+
 
 # Exposer le port pour le serveur PHP
 EXPOSE 9000
