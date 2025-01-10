@@ -22,21 +22,19 @@ class VerifyEmailController
     #[Route('/verify-email', name: 'app_verify_email', methods: ['GET'])]
     public function verifyUserEmail(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
-        // Récupérer l'ID de l'utilisateur depuis les paramètres de la requête
         $id = $request->get('id');
         $token = $request->get('token');
 
-        // Vérification : Si l'ID est manquant
         if (null === $id || null === $token) {
             return new JsonResponse([
                 'error' => 'User ID or token is missing.'
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        // Récupérer l'utilisateur correspondant à cet ID
+        // get user of this ID
         $user = $entityManager->getRepository(User::class)->find($id);
 
-        // Vérification : Si l'utilisateur n'existe pas
+        // check user existance
         if (null === $user) {
             return new JsonResponse([
                 'error' => 'User not found.'
@@ -47,7 +45,6 @@ class VerifyEmailController
             // Tenter de valider l'e-mail
             $this->emailVerifier->handleEmailConfirmation($request->getUri(), $user, $token);
         } catch (\Exception $e) {
-            // Retourner une erreur si la vérification échoue
             return new JsonResponse([
                 'error' => $e->getMessage()
             ], Response::HTTP_BAD_REQUEST);
