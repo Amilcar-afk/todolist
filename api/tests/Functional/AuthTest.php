@@ -6,52 +6,82 @@ use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 
 class AuthTest extends ApiTestCase
 {
+    const HTTP_OK = 200;
+    const HTTP_CREATED = 201;
+    const HTTP_BAD_REQUEST = 400;
+    const HTTP_UNAUTHORIZED = 401;
+
+    /** ---------- All Tests ----------- */
     public function testSuccessfulAuthentication(): void
     {
         // create user
         $uniqueEmail = 'testmail' . uniqid() . '@gmail.com';
         $password = 'azerty';
         $userCreated = $this->userRegistration($uniqueEmail, $password);
+        // check response from request
+        $this->assertResponseStatusCodeSame(self::HTTP_CREATED);
+        $this->assertArrayHasKey('id', $userCreated);
         $this->assertArrayHasKey('verificationTokenTest', $userCreated);
 
         $userId = $userCreated['id'];
         $userToken = $userCreated['verificationTokenTest'];
+        $this->assertNotEmpty($userId);
+        $this->assertNotEmpty($userToken);
 
         // confirm email
         $this->verifyUserEmail($userId, $userToken);
 
         // try to authenticate
         $this->userLogin($uniqueEmail, $password);
+        $this->assertResponseStatusCodeSame(self::HTTP_OK);
     }
+
+    public function testAuthenticationFailsWithInvalidCredentials(): void
+    {
+        // create user
+        $uniqueEmail = 'testmail' . uniqid() . '@gmail.com';
+        $password = 'azerty';
+        $userCreated = $this->userRegistration($uniqueEmail, $password);
+        $this->assertResponseStatusCodeSame(self::HTTP_CREATED);
+        $this->assertArrayHasKey('id', $userCreated);
+        $this->assertArrayHasKey('verificationTokenTest', $userCreated);
+
+        $userId = $userCreated['id'];
+        $userToken = $userCreated['verificationTokenTest'];
+        $this->assertNotEmpty($userId);
+        $this->assertNotEmpty($userToken);
+
+        // confirm email
+        $this->verifyUserEmail($userId, $userToken);
+        $this->assertResponseStatusCodeSame(self::HTTP_OK);
+
+        // try to authenticate
+        $this->userLogin($uniqueEmail, "wrongpassword");
+        $this->assertResponseStatusCodeSame(self::HTTP_UNAUTHORIZED);
+    }
+    /** -------- End All Tests -------- */
 
     public function userRegistration($email, $password): array
     {
         $client = static::createClient();
 
         //request to create a user
-        try {
-            $response = $client->request('POST', '/api/users', [
-                'headers' => [
-                    'Content-Type' => 'application/ld+json',
-                    'Accept' => 'application/ld+json',
-                ],
-                'json' => [
-                    'email' => $email,
-                    'password' => $password,
-                    'firstname' => 'John',
-                    'lastname' => 'Doe',
-                ],
-            ]);
-
-            // check response from request
-            $this->assertResponseStatusCodeSame(201);
-
-            $data = $response->toArray();
-            $this->assertArrayHasKey('id', $data); //check user id created
-            return $data;
-        } catch (\Exception $e) {
-            return ['error' => $e->getMessage()];
-        }
+        $response = $client->request('POST', '/api/users', [
+            'headers' => [
+                'Content-Type' => 'application/ld+json',
+                'Accept' => 'application/ld+json',
+            ],
+            'json' => [
+                'email' => $email,
+                'password' => $password,
+                'firstname' => 'John',
+                'lastname' => 'Doe',
+            ],
+        ]);
+        $this->assertNotEmpty($response);
+        $data = $response->toArray();
+        $this->assertArrayHasKey('id', $data); //check user id created
+        return $data;
     }
 
     public function verifyUserEmail($userId, $token): void
@@ -59,67 +89,39 @@ class AuthTest extends ApiTestCase
         $client = static::createClient();
 
         // Request to verify user email
-        try {
-            $client->request('GET', '/verify-email', [
-                'query' => [
-                    'id' => $userId,
-                    'token' => $token,
-                ],
-            ]);
+        $client->request('GET', '/verify-email', [
+            'query' => [
+                'id' => $userId,
+                'token' => $token,
+            ],
+        ]);
 
-            // check response from request
-            $this->assertResponseStatusCodeSame(200);
-
-        } catch (\Exception $e) {
-            $this->fail('Error during email verification: ' . $e->getMessage());
-        }
     }
 
     public function userLogin($userMail, $userPassword): void
     {
         $client = static::createClient();
-        try {
-            $client->request('POST', '/auth', [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/ld+json',
-                ],
-                'json' => [
-                    'email' => $userMail,
-                    'password' => $userPassword,
-                ],
-            ]);
-            $this->assertResponseStatusCodeSame(200);
-
-        } catch (\Exception $e) {
-            $this->fail('Error during authentication: ' . $e->getMessage());
-        }
-    }
-
-
-
-    /*public function testAuthenticationFailsWithInvalidCredentials(): void
-    {
-        // Requête avec des identifiants invalides
-        $response = static::createClient()->request('POST', '/auth', [
+        $client->request('POST', '/auth', [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/ld+json',
+            ],
             'json' => [
-                'email' => 'invalid@example.com',
-                'password' => 'wrongpassword',
+                'email' => $userMail,
+                'password' => $userPassword,
             ],
         ]);
-
-        // Vérifiez que la réponse est une erreur 401
-        $this->assertResponseStatusCodeSame(401);
-        $data = $response->toArray();
-
-        // Vérifiez le message d'erreur
-        $this->assertArrayHasKey('message', $data);
-        $this->assertEquals('Invalid credentials.', $data['message']);
-    }*/
+    }
 
     protected function tearDown(): void
     {
         parent::tearDown();
-        static::ensureKernelShutdown(); // Assure la réinitialisation du kernel Symfony
+        // Supprimez restore_error_handler() et restore_exception_handler() si inutiles
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        // Supprimez restore_error_handler() et restore_exception_handler() si inutiles
     }
 }
