@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="App\Tests\Functional\AuthTest" file="/var/www/html/tests/Functional/AuthTest.php" tests="1" assertions="3" errors="0" failures="0" skipped="0" time="10.331920">
+    <testcase name="testSuccessfulAuthentication" file="/var/www/html/tests/Functional/AuthTest.php" line="9" class="App\Tests\Functional\AuthTest" classname="App.Tests.Functional.AuthTest" assertions="3" time="10.331920"/>
+  </testsuite>
+</testsuites>
