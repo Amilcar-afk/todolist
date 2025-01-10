@@ -75,6 +75,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $verificationToken = null;
 
+    #[Groups(['user:read'])]
+    private ?string $verificationTokenTest = null;
+
     /**
      * @var Collection<int, Task>
      */
@@ -207,6 +210,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setVerificationToken(?string $verificationToken): static
     {
         $this->verificationToken = $verificationToken;
+
+        return $this;
+    }
+
+    public function getVerificationTokenTest(): ?string
+    {
+        return $this->verificationTokenTest;
+    }
+
+    public function setVerificationTokenTest(?string $verificationToken): static
+    {
+        $this->verificationTokenTest = $verificationToken;
 
         return $this;
     }
