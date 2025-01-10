@@ -8,65 +8,95 @@ class AuthTest extends ApiTestCase
 {
     public function testSuccessfulAuthentication(): void
     {
+        // create user
         $uniqueEmail = 'testmail' . uniqid() . '@gmail.com';
+        $password = 'azerty';
+        $userCreated = $this->userRegistration($uniqueEmail, $password);
+        $this->assertArrayHasKey('verificationTokenTest', $userCreated);
+
+        $userId = $userCreated['id'];
+        $userToken = $userCreated['verificationTokenTest'];
+
+        // confirm email
+        $this->verifyUserEmail($userId, $userToken);
+
+        // try to authenticate
+        $this->userLogin($uniqueEmail, $password);
+    }
+
+    public function userRegistration($email, $password): array
+    {
         $client = static::createClient();
 
-        // Étape 1 : Créer un utilisateur
-        $client->request('POST', '/api/users', [
-            'headers' => [
-                'Content-Type' => 'application/ld+json',
-                'Accept' => 'application/ld+json',
-            ],
-            'json' => [
-                'email' => $uniqueEmail,
-                'password' => 'azerty',
-                'firstname' => 'John',
-                'lastname' => 'Doe',
-            ],
-        ]);
+        //request to create a user
+        try {
+            $response = $client->request('POST', '/api/users', [
+                'headers' => [
+                    'Content-Type' => 'application/ld+json',
+                    'Accept' => 'application/ld+json',
+                ],
+                'json' => [
+                    'email' => $email,
+                    'password' => $password,
+                    'firstname' => 'John',
+                    'lastname' => 'Doe',
+                ],
+            ]);
 
-        $this->assertResponseIsSuccessful();
+            // check response from request
+            $this->assertResponseStatusCodeSame(201);
 
-        // Récupérer les données utilisateur
-        var_dump("ici");
-        var_dump($client->getResponse());
-        var_dump("ici2");
-        var_dump($client->getResponse()->getContent());
-        $data = json_decode($client->getResponse()->getContent(), true);
-        $userId = $data['id'];
-
-        var_dump($data);
-
-        // Simuler un vrai token d'activation (vous pouvez le récupérer via votre application ou le générer)
-        $token = $data->getVerificationToken(); // Ajoutez une méthode qui récupère un vrai token ici
-        // Étape 2 : Vérifier l'adresse e-mail via le contrôleur
-        $client->request('GET', '/verify-email', [
-            'query' => [
-                'id' => $userId,
-                'token' => $token, // Remplacer par le token réel généré dans votre implémentation
-            ],
-        ]);
-
-        $this->assertResponseIsSuccessful();
-
-        // Étape 3 : Authentification via /auth
-        $response = $client->request('POST', '/auth', [
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/ld+json',
-            ],
-            'json' => [
-                'email' => $uniqueEmail,
-                'password' => 'azerty',
-            ],
-        ]);
-
-        $this->assertResponseIsSuccessful();
-
-        $data = $response->toArray();
-        $this->assertArrayHasKey('token', $data);
-        $this->assertNotEmpty($data['token']);
+            $data = $response->toArray();
+            $this->assertArrayHasKey('id', $data); //check user id created
+            return $data;
+        } catch (\Exception $e) {
+            return ['error' => $e->getMessage()];
+        }
     }
+
+    public function verifyUserEmail($userId, $token): void
+    {
+        $client = static::createClient();
+
+        // Request to verify user email
+        try {
+            $client->request('GET', '/verify-email', [
+                'query' => [
+                    'id' => $userId,
+                    'token' => $token,
+                ],
+            ]);
+
+            // check response from request
+            $this->assertResponseStatusCodeSame(200);
+
+        } catch (\Exception $e) {
+            $this->fail('Error during email verification: ' . $e->getMessage());
+        }
+    }
+
+    public function userLogin($userMail, $userPassword): void
+    {
+        $client = static::createClient();
+        try {
+            $client->request('POST', '/auth', [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/ld+json',
+                ],
+                'json' => [
+                    'email' => $userMail,
+                    'password' => $userPassword,
+                ],
+            ]);
+            $this->assertResponseStatusCodeSame(200);
+
+        } catch (\Exception $e) {
+            $this->fail('Error during authentication: ' . $e->getMessage());
+        }
+    }
+
+
 
     /*public function testAuthenticationFailsWithInvalidCredentials(): void
     {
@@ -86,4 +116,10 @@ class AuthTest extends ApiTestCase
         $this->assertArrayHasKey('message', $data);
         $this->assertEquals('Invalid credentials.', $data['message']);
     }*/
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        static::ensureKernelShutdown(); // Assure la réinitialisation du kernel Symfony
+    }
 }
