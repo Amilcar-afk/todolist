@@ -3,14 +3,26 @@ name: CI
 on:
   push:
     branches:
-      - master
+      - main
+      - feature/tests  # Ajoutez cette ligne
   pull_request:
     branches:
-      - master
+      - main
+      - feature/tests  # Ajoutez cette ligne
 
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: todolist_test
+        ports:
+          - 5432:5432
 
     steps:
       - name: Checkout repository
