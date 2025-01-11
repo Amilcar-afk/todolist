@@ -5,34 +5,81 @@ namespace App\Tests\Functional;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\User;
 use App\Factory\UserFactory;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Foundry\Test\ResetDatabase;
 
 class UserTest extends ApiTestCase
 {
+    const HTTP_OK = 200;
+    const HTTP_CREATED = 201;
+    const HTTP_BAD_REQUEST = 400;
+    const HTTP_UNAUTHORIZED = 401;
+
     use ResetDatabase, Factories;
 
-    public function testGetUserCollection(): void
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
+    public function testGetSingleUser(): void
     {
-        // Crée plusieurs utilisateurs fictifs
-        UserFactory::createMany(10);
+        // Create a fake user
+        $fakeUser = UserFactory::createOne([
+            'isVerified' => true,
+            'password' => 'password'
+        ]);
+        $userId = $fakeUser->getId();
+        $userEmail = $fakeUser->getEmail();
+        $userPassword = "password";
 
-        $response = static::createClient()->request('GET', '/api/users');
+        $userToken = $this->userLogin($userEmail, $userPassword);
+        $this->assertResponseStatusCodeSame(self::HTTP_OK);
 
-        $this->assertResponseIsSuccessful();
-        $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
-
-        // Vérifie que le JSON retourné contient des utilisateurs
-        $this->assertJsonContains([
-            '@context' => '/contexts/User',
-            '@type' => 'Collection',
+        static::createClient()->request('GET', '/api/users/' . $userId, [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/ld+json',
+                'Authorization' => 'Bearer ' . $userToken
+            ]
         ]);
 
-        // Vérifie le nombre d'éléments retournés
-        $this->assertCount(10, $response->toArray()['hydra:member']);
+        $this->assertResponseStatusCodeSame(self::HTTP_OK);
+        $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
+        $this->assertJsonContains([
+            '@context' => '/api/contexts/User',
+            '@type' => 'User',
+            'id' => $userId,
+        ]);
+        $this->assertMatchesResourceItemJsonSchema(User::class);
+    }
 
-        // Valide le schéma JSON de la collection
-        $this->assertMatchesResourceCollectionJsonSchema(User::class);
+    /**
+     * @throws TransportExceptionInterface
+     */
+    public function userLogin($userMail, $userPassword): mixed
+    {
+        $client = static::createClient();
+        $response = $client->request('POST', '/auth', [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/ld+json',
+            ],
+            'json' => [
+                'email' => $userMail,
+                'password' => $userPassword,
+            ],
+        ]);
+        $this->assertNotEmpty($response);
+        $data = $response->toArray();
+        return $data["token"];
     }
 
     /*public function testCreateUser(): void
