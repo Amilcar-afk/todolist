@@ -13,12 +13,20 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: todolist_test
+        ports:
+          - 5433:5433
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Copy .env file
-        run: cp ./api/.env /var/www/html/.env
 
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
@@ -27,6 +35,17 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y docker-compose
+
+      - name: Vérifier si le fichier .env existe
+        run: |
+          ls -l ./api/.env || echo ".env file does not exist"
+
+      - name: Copier .env si nécessaire
+        run: |
+          if [ ! -f ./api/.env ]; then
+            echo ".env file not found, creating from .env.example"
+            cp ./api/.env.example ./api/.env
+          fi
 
       - name: Start application
         run: docker-compose up -d
@@ -37,5 +56,13 @@ jobs:
       - name: Run PHPUnit tests
         run: docker-compose run --rm test
 
-      - name: List files in current directory
-        run: ls -l
+  lint:
+    name: Docker Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Lint Dockerfiles
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          recursive: true
