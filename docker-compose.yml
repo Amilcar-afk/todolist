@@ -16,6 +16,29 @@ services:
     networks:
       - symfony_net
 
+  test:
+    build:
+      context: ./api
+    container_name: phpunit_tests
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://user:password@db:5432/todolist_test
+    volumes:
+      - ./api:/var/www/html
+    env_file:
+      - ./api/.env
+      - ./api/.env.test
+    networks:
+      - symfony_net
+    command: >
+      sh -c "
+      php bin/console doctrine:database:drop --force --if-exists --env=test &&
+      php bin/console doctrine:database:create --if-not-exists --env=test &&
+      php bin/console doctrine:migrations:migrate --no-interaction --env=test &&
+      vendor/bin/phpunit
+      "
+
   front:
     build:
       context: ./front
