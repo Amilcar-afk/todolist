@@ -36,17 +36,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y docker-compose
 
-      - name: Vérifier si le fichier .env existe
-        run: |
-          ls -l ./api/.env || echo ".env file does not exist"
-
-      - name: Copier .env si nécessaire
-        run: |
-          if [ ! -f ./api/.env ]; then
-            echo ".env file not found, creating from .env.example"
-            cp ./api/.env.example ./api/.env
-          fi
-
       - name: Start application
         run: docker-compose up -d
 
