@@ -3,6 +3,11 @@
 namespace App\Tests\Functional;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class AuthTest extends ApiTestCase
 {
@@ -11,7 +16,15 @@ class AuthTest extends ApiTestCase
     const HTTP_BAD_REQUEST = 400;
     const HTTP_UNAUTHORIZED = 401;
 
-    /** ---------- All Tests ----------- */
+    /* ---------- All Tests ----------- */
+
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testSuccessfulAuthentication(): void
     {
         // create user
@@ -36,6 +49,13 @@ class AuthTest extends ApiTestCase
         $this->assertResponseStatusCodeSame(self::HTTP_OK);
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testAuthenticationFailsWithInvalidCredentials(): void
     {
         // create user
@@ -61,6 +81,13 @@ class AuthTest extends ApiTestCase
     }
     /** -------- End All Tests -------- */
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function userRegistration($email, $password): array
     {
         $client = static::createClient();
@@ -84,6 +111,9 @@ class AuthTest extends ApiTestCase
         return $data;
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     */
     public function verifyUserEmail($userId, $token): void
     {
         $client = static::createClient();
@@ -98,6 +128,9 @@ class AuthTest extends ApiTestCase
 
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     */
     public function userLogin($userMail, $userPassword): void
     {
         $client = static::createClient();
@@ -113,15 +146,4 @@ class AuthTest extends ApiTestCase
         ]);
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        // Supprimez restore_error_handler() et restore_exception_handler() si inutiles
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        // Supprimez restore_error_handler() et restore_exception_handler() si inutiles
-    }
 }
