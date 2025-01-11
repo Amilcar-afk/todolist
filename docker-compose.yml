@@ -26,9 +26,6 @@ services:
       DATABASE_URL: postgres://user:password@db:5432/todolist_test
     volumes:
       - ./api:/var/www/html
-    env_file:
-      - ./api/.env
-      - ./api/.env.test
     networks:
       - symfony_net
     command: >
