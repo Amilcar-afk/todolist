@@ -40,7 +40,7 @@ jobs:
         run: docker-compose up -d
 
       - name: Install dependencies
-        run: docker exec -it api_platform composer install
+        run: docker exec api_platform composer install
 
       - name: Run PHPUnit tests
         run: docker-compose run --rm test
