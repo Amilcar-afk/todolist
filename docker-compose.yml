@@ -8,8 +8,6 @@ services:
       - "8000:8000"
     volumes:
       - ./api:/var/www/html
-      - ./api/.env.example:/var/www/html/.env
-      - ./api/.env.example.test:/var/www/html/.env.test
     environment:
       DATABASE_URL: postgres://user:password@db:5432/todolist
     depends_on:
@@ -28,8 +26,6 @@ services:
       DATABASE_URL: postgres://user:password@db:5432/todolist_test
     volumes:
       - ./api:/var/www/html
-      - ./api/.env.example:/var/www/html/.env
-      - ./api/.env.example.test:/var/www/html/.env.test
     env_file:
       - ./api/.env
       - ./api/.env.test
