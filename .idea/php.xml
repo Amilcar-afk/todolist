@@ -152,6 +152,10 @@
       <path value="$PROJECT_DIR$/api/vendor/zenstruck/assert" />
       <path value="$PROJECT_DIR$/api/vendor/zenstruck/foundry" />
       <path value="$PROJECT_DIR$/api/vendor/doctrine/doctrine-fixtures-bundle" />
+      <path value="$PROJECT_DIR$/api/vendor/icecave/parity" />
+      <path value="$PROJECT_DIR$/api/vendor/icecave/repr" />
+      <path value="$PROJECT_DIR$/api/vendor/marc-mabe/php-enum" />
+      <path value="$PROJECT_DIR$/api/vendor/justinrainbow/json-schema" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />
