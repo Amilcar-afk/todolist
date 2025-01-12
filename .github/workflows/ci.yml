@@ -39,6 +39,7 @@ jobs:
           echo "JWT_PASSPHRASE=${{ secrets.JWT_PASSPHRASE }}" >> .env
           echo "CORS_ALLOW_ORIGIN=${{ secrets.CORS_ALLOW_ORIGIN }}" >> .env
           echo "MAILER_DSN=${{ secrets.MAILER_DSN }}" >> .env
+          echo "MAILER_DSN=${{ secrets.JWT_SECRET_KEY }}" >> .env
         working-directory: ./api
 
       - name: Start application
