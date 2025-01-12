@@ -72,7 +72,9 @@ services:
       MP_SMTP_AUTH_ACCEPT_ANY: 1
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
     networks:
-      - symfony_net
+      symfony_net:
+       aliases:
+          - todolist-mailer-1
 
 networks:
   symfony_net:
