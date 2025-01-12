@@ -13,6 +13,12 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      APP_ENV: test
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      APP_SECRET: ${{ secrets.APP_SECRET }}
+      JWT_PASSPHRASE: ${{ secrets.JWT_PASSPHRASE }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
