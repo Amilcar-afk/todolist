@@ -79,6 +79,8 @@ class UserTest extends ApiTestCase
         ]);
         $this->assertNotEmpty($response);
         $data = $response->toArray();
+        var_dump("check data");
+        var_dump($data);
         return $data["token"];
     }
 
