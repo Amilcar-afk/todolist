@@ -37,6 +37,8 @@ jobs:
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
           echo "APP_SECRET=${{ secrets.APP_SECRET }}" >> .env
           echo "JWT_PASSPHRASE=${{ secrets.JWT_PASSPHRASE }}" >> .env
+          echo "CORS_ALLOW_ORIGIN=${{ secrets.CORS_ALLOW_ORIGIN }}" >> .env
+          echo "MAILER_DSN=${{ secrets.MAILER_DSN }}" >> .env
         working-directory: ./api
 
       - name: Start application
