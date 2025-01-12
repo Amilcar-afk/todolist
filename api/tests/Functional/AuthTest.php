@@ -107,6 +107,7 @@ class AuthTest extends ApiTestCase
         ]);
         $this->assertNotEmpty($response);
         $data = $response->toArray();
+        var_dump($data);
         $this->assertArrayHasKey('id', $data); //check user id created
         return $data;
     }
@@ -134,7 +135,7 @@ class AuthTest extends ApiTestCase
     public function userLogin($userMail, $userPassword): void
     {
         $client = static::createClient();
-        $client->request('POST', '/auth', [
+        $response = $client->request('POST', '/auth', [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/ld+json',
@@ -144,6 +145,7 @@ class AuthTest extends ApiTestCase
                 'password' => $userPassword,
             ],
         ]);
+        var_dump($response->toArray());
     }
 
 }
