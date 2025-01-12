@@ -15,9 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       APP_ENV: test
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      APP_SECRET: ${{ secrets.APP_SECRET }}
-      JWT_PASSPHRASE: ${{ secrets.JWT_PASSPHRASE }}
 
     steps:
       - name: Checkout repository
@@ -50,7 +47,7 @@ jobs:
         run: docker exec api_platform composer install
 
       - name: Run PHPUnit tests
-        run: docker-compose run --rm test
+        run: docker-compose up test
 
       - name: List files in current directory
         run: ls -l
