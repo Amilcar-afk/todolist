@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - main
-      - feature/tests  # Assurez-vous que la branche est incluse
+      - feature/tests
   pull_request:
     branches:
       - main
-      - feature/tests  # Assurez-vous que la branche est incluse
+      - feature/tests
 
 jobs:
   test:
