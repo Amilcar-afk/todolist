@@ -51,6 +51,14 @@ jobs:
           echo "PANTHER_ERROR_SCREENSHOT_DIR=${{ secrets.PANTHER_ERROR_SCREENSHOT_DIR }}" >> .env.test
           echo "KERNEL_CLASS=${{ secrets.KERNEL_CLASS }}" >> .env.test
 
+      - name: Validate environment variables
+        working-directory: ./api
+        run: |
+          echo "Validating .env file"
+          cat .env
+          echo "Validating .env.test file"
+          cat .env.test
+
       - name: Start application
         run: docker-compose up -d
 
