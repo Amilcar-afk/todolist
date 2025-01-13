@@ -23,7 +23,7 @@ services:
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgres://user:password@db:5432/todolist_test
+      DATABASE_URL: postgres://user:password@db:5432/todolist
     volumes:
       - ./api:/var/www/html
     env_file:
