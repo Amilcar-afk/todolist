@@ -29,6 +29,7 @@ jobs:
           sudo apt-get install -y docker-compose
 
       - name: Create .env file
+        working-directory: ./api
         run: |
           echo "APP_ENV=${{ secrets.APP_ENV }}" > .env
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
@@ -40,6 +41,7 @@ jobs:
           echo "JWT_PUBLIC_KEY=${{ secrets.JWT_PUBLIC_KEY }}" >> .env
 
       - name: Create .env.test file
+        working-directory: ./api
         run: |
           echo "APP_ENV=${{ secrets.APP_ENV_TEST }}" > .env.test
           echo "DATABASE_URL=${{ secrets.DATABASE_URL_TEST }}" >> .env.test
@@ -48,8 +50,6 @@ jobs:
           echo "PANTHER_APP_ENV=${{ secrets.PANTHER_APP_ENV }}" >> .env.test
           echo "PANTHER_ERROR_SCREENSHOT_DIR=${{ secrets.PANTHER_ERROR_SCREENSHOT_DIR }}" >> .env.test
           echo "PANTHER_ERROR_SCREENSHOT_DIR=${{ secrets.KERNEL_CLASS }}" >> .env.test
-
-        working-directory: ./api
 
       - name: Start application
         run: docker-compose up -d
