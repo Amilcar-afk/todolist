@@ -30,7 +30,7 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo "APP_ENV=test" > .env
+          echo "APP_ENV=${{ secrets.APP_ENV }}" > .env
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
           echo "APP_SECRET=${{ secrets.APP_SECRET }}" >> .env
           echo "JWT_PASSPHRASE=${{ secrets.JWT_PASSPHRASE }}" >> .env
@@ -38,6 +38,17 @@ jobs:
           echo "MAILER_DSN=${{ secrets.MAILER_DSN }}" >> .env
           echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> .env
           echo "JWT_PUBLIC_KEY=${{ secrets.JWT_PUBLIC_KEY }}" >> .env
+
+      - name: Create .env.test file
+        run: |
+          echo "APP_ENV=${{ secrets.APP_ENV_TEST }}" > .env.test
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL_TEST }}" >> .env.test
+          echo "APP_SECRET=${{ secrets.APP_SECRET_TEST }}" >> .env.test
+          echo "SYMFONY_DEPRECATIONS_HELPER=${{ secrets.SYMFONY_DEPRECATIONS_HELPER }}" >> .env.test
+          echo "PANTHER_APP_ENV=${{ secrets.PANTHER_APP_ENV }}" >> .env.test
+          echo "PANTHER_ERROR_SCREENSHOT_DIR=${{ secrets.PANTHER_ERROR_SCREENSHOT_DIR }}" >> .env.test
+          echo "PANTHER_ERROR_SCREENSHOT_DIR=${{ secrets.KERNEL_CLASS }}" >> .env.test
+
         working-directory: ./api
 
       - name: Start application
