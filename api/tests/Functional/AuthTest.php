@@ -138,14 +138,13 @@ class AuthTest extends ApiTestCase
         $response = $client->request('POST', '/auth', [
             'headers' => [
                 'Content-Type' => 'application/json',
-                'Accept' => 'application/ld+json',
+                'Accept' => 'application/json',
             ],
             'json' => [
                 'email' => $userMail,
                 'password' => $userPassword,
             ],
         ]);
-        var_dump($response->toArray());
     }
 
 }
