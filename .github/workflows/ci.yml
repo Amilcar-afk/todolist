@@ -49,7 +49,7 @@ jobs:
           echo "SYMFONY_DEPRECATIONS_HELPER=${{ secrets.SYMFONY_DEPRECATIONS_HELPER }}" >> .env.test
           echo "PANTHER_APP_ENV=${{ secrets.PANTHER_APP_ENV }}" >> .env.test
           echo "PANTHER_ERROR_SCREENSHOT_DIR=${{ secrets.PANTHER_ERROR_SCREENSHOT_DIR }}" >> .env.test
-          echo "PANTHER_ERROR_SCREENSHOT_DIR=${{ secrets.KERNEL_CLASS }}" >> .env.test
+          echo "KERNEL_CLASS=${{ secrets.KERNEL_CLASS }}" >> .env.test
 
       - name: Start application
         run: docker-compose up -d
