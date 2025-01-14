@@ -1,84 +1,93 @@
-name: CI
+  name: CI
+  
+  on:
+    push:
+      branches:
+        - main
+        - feature/tests
+    pull_request:
+      branches:
+        - main
+        - feature/tests
+  
+  jobs:
+    test:
+      runs-on: ubuntu-latest
+      env:
+        APP_ENV: test
+  
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v3
+  
+        - name: Set up Docker
+          uses: docker/setup-buildx-action@v2
+  
+        - name: Install Docker Compose
+          run: |
+            sudo apt-get update
+            sudo apt-get install -y docker-compose
+  
+        - name: Create .env file
+          working-directory: ./api
+          run: |
+            echo "APP_ENV=dev" > .env
+            echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+            echo "APP_SECRET=${{ secrets.APP_SECRET }}" >> .env
+            echo "JWT_PASSPHRASE=${{ secrets.JWT_PASSPHRASE }}" >> .env
+            echo "CORS_ALLOW_ORIGIN=${{ secrets.CORS_ALLOW_ORIGIN }}" >> .env
+            echo "MAILER_DSN=${{ secrets.MAILER_DSN }}" >> .env
+            echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> .env
+            echo "JWT_PUBLIC_KEY=${{ secrets.JWT_PUBLIC_KEY }}" >> .env
+  
+        - name: Create .env.test file
+          working-directory: ./api
+          run: |
+            echo "APP_ENV=test" > .env.test
+            echo "DATABASE_URL=${{ secrets.DATABASE_URL_TEST }}" >> .env.test
+            echo "APP_SECRET=${{ secrets.APP_SECRET_TEST }}" >> .env.test
+            echo "SYMFONY_DEPRECATIONS_HELPER=${{ secrets.SYMFONY_DEPRECATIONS_HELPER }}" >> .env.test
+            echo "PANTHER_APP_ENV=${{ secrets.PANTHER_APP_ENV }}" >> .env.test
+            echo "PANTHER_ERROR_SCREENSHOT_DIR=${{ secrets.PANTHER_ERROR_SCREENSHOT_DIR }}" >> .env.test
+            echo "KERNEL_CLASS=${{ secrets.KERNEL_CLASS }}" >> .env.test
+  
+        - name: Validate environment variables
+          working-directory: ./api
+          run: |
+            echo "Validating .env file"
+            cat .env
+            echo "Validating .env.test file"
+            cat .env.test
 
-on:
-  push:
-    branches:
-      - main
-      - feature/tests
-  pull_request:
-    branches:
-      - main
-      - feature/tests
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    env:
-      APP_ENV: test
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Set up Docker
-        uses: docker/setup-buildx-action@v2
-
-      - name: Install Docker Compose
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose
-
-      - name: Create .env file
-        working-directory: ./api
-        run: |
-          echo "APP_ENV=dev" > .env
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
-          echo "APP_SECRET=${{ secrets.APP_SECRET }}" >> .env
-          echo "JWT_PASSPHRASE=${{ secrets.JWT_PASSPHRASE }}" >> .env
-          echo "CORS_ALLOW_ORIGIN=${{ secrets.CORS_ALLOW_ORIGIN }}" >> .env
-          echo "MAILER_DSN=${{ secrets.MAILER_DSN }}" >> .env
-          echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> .env
-          echo "JWT_PUBLIC_KEY=${{ secrets.JWT_PUBLIC_KEY }}" >> .env
-
-      - name: Create .env.test file
-        working-directory: ./api
-        run: |
-          echo "APP_ENV=test" > .env.test
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL_TEST }}" >> .env.test
-          echo "APP_SECRET=${{ secrets.APP_SECRET_TEST }}" >> .env.test
-          echo "SYMFONY_DEPRECATIONS_HELPER=${{ secrets.SYMFONY_DEPRECATIONS_HELPER }}" >> .env.test
-          echo "PANTHER_APP_ENV=${{ secrets.PANTHER_APP_ENV }}" >> .env.test
-          echo "PANTHER_ERROR_SCREENSHOT_DIR=${{ secrets.PANTHER_ERROR_SCREENSHOT_DIR }}" >> .env.test
-          echo "KERNEL_CLASS=${{ secrets.KERNEL_CLASS }}" >> .env.test
-
-      - name: Validate environment variables
-        working-directory: ./api
-        run: |
-          echo "Validating .env file"
-          cat .env
-          echo "Validating .env.test file"
-          cat .env.test
-
-      - name: Start application
-        run: docker-compose up -d
-
-      - name: Install dependencies
-        run: docker exec api_platform composer install
-
-      - name: Validate JWT keys
-        run: |
-          ls -l ./api/config/
-          cat ./api/config/jwt/private.pem
-          cat ./api/config/jwt/public.pem
-
-      - name: Verify server
-        run: curl http://localhost:8000/api/users
-
-      - name: Check migrations status
-        run: docker exec api_platform php bin/console doctrine:migrations:status
-
-      - name: Run PHPUnit tests
-        run: docker-compose up test
-
-      - name: List files in current directory
-        run: ls -l
+        - name: Create JWT keys
+          working-directory: ./api/config
+          run: |
+            mkdir -p jwt
+            echo "${{ secrets.JWT_PRIVATE_KEY_CONTENT }}" > jwt/private.pem
+            echo "${{ secrets.JWT_PUBLIC_KEY_CONTENT }}" > jwt/public.pem
+            chmod 600 jwt/private.pem jwt/public.pem
+            ls -l jwt
+  
+        - name: Start application
+          run: docker-compose up -d
+  
+        - name: Install dependencies
+          run: docker exec api_platform composer install
+  
+        - name: Validate JWT keys
+          run: |
+            ls -l ./api/config/
+            cat ./api/config/jwt/private.pem
+            cat ./api/config/jwt/public.pem
+  
+        - name: Verify server
+          run: curl http://localhost:8000/api/users
+  
+        - name: Check migrations status
+          run: docker exec api_platform php bin/console doctrine:migrations:status
+  
+        - name: Run PHPUnit tests
+          run: docker-compose up test
+  
+        - name: List files in current directory
+          run: ls -l
