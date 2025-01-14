@@ -67,8 +67,9 @@ jobs:
 
       - name: Validate JWT keys
         run: |
-          ls -l /path/to/keys
-          cat /path/to/keys/private.key
+          ls -l ./api/config/jwt
+          cat ./api/config/jwt/private.key
+          cat ./api/config/jwt/public.key
 
       - name: Verify server
         run: curl http://localhost:8000/api/users
