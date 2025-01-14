@@ -44,7 +44,7 @@ class SendMailRegistrationListener
     }
 
     private function isTestEnvironment(): bool
-    {git 
+    {
         return $_ENV['APP_ENV'] === 'test';
     }
 }
