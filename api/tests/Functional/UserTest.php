@@ -51,7 +51,7 @@ class UserTest extends ApiTestCase
             ]
         ]);
 
-        $this->assertResponseStatusCodeSame(self::HTTP_OK);
+        $this->assertResponseStatusCodeSame(self::HTTP_BAD_REQUEST);
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
         $this->assertJsonContains([
             '@context' => '/api/contexts/User',
