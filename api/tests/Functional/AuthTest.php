@@ -107,6 +107,7 @@ class AuthTest extends ApiTestCase
         ]);
         $this->assertNotEmpty($response);
         $data = $response->toArray();
+        var_dump("data before registration Auth test");
         var_dump($data);
         $this->assertArrayHasKey('id', $data); //check user id created
         return $data;
@@ -145,6 +146,8 @@ class AuthTest extends ApiTestCase
                 'password' => $userPassword,
             ],
         ]);
+        var_dump("user login response in Auth test");
+        var_dump($response->toArray());
     }
 
 }

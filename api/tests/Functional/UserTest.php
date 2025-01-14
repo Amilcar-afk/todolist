@@ -40,6 +40,9 @@ class UserTest extends ApiTestCase
         $userEmail = $fakeUser->getEmail();
         $userPassword = "password";
 
+        var_dump("mail");
+        var_dump($userEmail);
+
         $userToken = $this->userLogin($userEmail, $userPassword);
         $this->assertResponseStatusCodeSame(self::HTTP_OK);
 
