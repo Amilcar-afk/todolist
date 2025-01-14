@@ -67,7 +67,7 @@ jobs:
 
       - name: Validate JWT keys
         run: |
-          ls -l ./api/config/jwt
+          ls -l ./api/config/
           cat ./api/config/jwt/private.pem
           cat ./api/config/jwt/public.pem
 
