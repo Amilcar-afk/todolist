@@ -40,9 +40,6 @@ class UserTest extends ApiTestCase
         $userEmail = $fakeUser->getEmail();
         $userPassword = "password";
 
-        var_dump("mail");
-        var_dump($userEmail);
-
         $userToken = $this->userLogin($userEmail, $userPassword);
         $this->assertResponseStatusCodeSame(self::HTTP_OK);
 
@@ -81,11 +78,7 @@ class UserTest extends ApiTestCase
             ],
         ]);
         $this->assertNotEmpty($response);
-        var_dump("check response user test");
-        var_dump($response->getContent(false));
         $data = $response->toArray();
-        var_dump("check data");
-        var_dump($data);
         return $data["token"];
     }
 

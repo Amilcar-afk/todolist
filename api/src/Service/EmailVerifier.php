@@ -24,9 +24,6 @@ class EmailVerifier
     public function sendEmailConfirmation(string $verifyEmailRouteName, User $user, TemplatedEmail $email): void
     {
         $token = $user->getVerificationToken();
-        var_dump($user->getEmail());
-        var_dump("verification token");
-        var_dump($token);
 
         // Générer l'URL avec l'ID et le token de l'utilisateur
         $signedUrl = $this->router->generate($verifyEmailRouteName, [
