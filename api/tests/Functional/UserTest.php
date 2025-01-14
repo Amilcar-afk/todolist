@@ -81,6 +81,8 @@ class UserTest extends ApiTestCase
             ],
         ]);
         $this->assertNotEmpty($response);
+        var_dump("check response user test");
+        var_dump($response->getContent(false));
         $data = $response->toArray();
         var_dump("check data");
         var_dump($data);
