@@ -65,6 +65,17 @@ jobs:
       - name: Install dependencies
         run: docker exec api_platform composer install
 
+      - name: Validate JWT keys
+        run: |
+          ls -l /path/to/keys
+          cat /path/to/keys/private.key
+
+      - name: Verify server
+        run: curl http://localhost:8000/api/users
+
+      - name: Check migrations status
+        run: docker exec api_platform php bin/console doctrine:migrations:status
+
       - name: Run PHPUnit tests
         run: docker-compose up test
 

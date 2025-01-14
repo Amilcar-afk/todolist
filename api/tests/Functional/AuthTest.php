@@ -107,6 +107,8 @@ class AuthTest extends ApiTestCase
         ]);
         $this->assertNotEmpty($response);
         $data = $response->toArray();
+        var_dump("check response auth test");
+        var_dump($response->getContent(false));
         var_dump("data before registration Auth test");
         var_dump($data);
         $this->assertArrayHasKey('id', $data); //check user id created
