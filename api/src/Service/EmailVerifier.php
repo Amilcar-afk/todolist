@@ -24,7 +24,7 @@ class EmailVerifier
     public function sendEmailConfirmation(string $verifyEmailRouteName, User $user, TemplatedEmail $email): void
     {
         $token = $user->getVerificationToken();
-        var_dump($user);
+        var_dump($user->getEmail());
         var_dump("verification token");
         var_dump($token);
 
