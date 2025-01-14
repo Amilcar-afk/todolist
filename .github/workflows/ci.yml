@@ -50,14 +50,6 @@
             echo "PANTHER_APP_ENV=${{ secrets.PANTHER_APP_ENV }}" >> .env.test
             echo "PANTHER_ERROR_SCREENSHOT_DIR=${{ secrets.PANTHER_ERROR_SCREENSHOT_DIR }}" >> .env.test
             echo "KERNEL_CLASS=${{ secrets.KERNEL_CLASS }}" >> .env.test
-  
-        - name: Validate environment variables
-          working-directory: ./api
-          run: |
-            echo "Validating .env file"
-            cat .env
-            echo "Validating .env.test file"
-            cat .env.test
 
         - name: Create JWT keys
           working-directory: ./api/config
@@ -80,14 +72,5 @@
             cat ./api/config/jwt/private.pem
             cat ./api/config/jwt/public.pem
   
-        - name: Verify server
-          run: curl http://localhost:8000/api/users
-  
-        - name: Check migrations status
-          run: docker exec api_platform php bin/console doctrine:migrations:status
-  
         - name: Run PHPUnit tests
-          run: docker-compose up test
-  
-        - name: List files in current directory
-          run: ls -l
+          run: docker-compose run --rm test
