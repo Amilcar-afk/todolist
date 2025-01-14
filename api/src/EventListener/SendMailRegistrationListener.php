@@ -27,7 +27,7 @@ class SendMailRegistrationListener
         if (!$entity instanceof User) {
             return;
         }
-        var_dump($this->isTestEnvironment());
+
         if ($this->isTestEnvironment()) {
             $tokenVerification = $entity->getVerificationToken();
             $entity->setVerificationTokenTest($tokenVerification);
@@ -44,7 +44,7 @@ class SendMailRegistrationListener
     }
 
     private function isTestEnvironment(): bool
-    {
+    {git 
         return $_ENV['APP_ENV'] === 'test';
     }
 }
