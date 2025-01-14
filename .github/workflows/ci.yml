@@ -45,7 +45,7 @@ jobs:
         run: |
           echo "APP_ENV=test" > .env.test
           echo "DATABASE_URL=${{ secrets.DATABASE_URL_TEST }}" >> .env.test
-          echo "APP_SECRET='$ecretf0rt3st'" >> .env.test
+          echo "APP_SECRET=${{ secrets.APP_SECRET_TEST }}" >> .env.test
           echo "SYMFONY_DEPRECATIONS_HELPER=${{ secrets.SYMFONY_DEPRECATIONS_HELPER }}" >> .env.test
           echo "PANTHER_APP_ENV=${{ secrets.PANTHER_APP_ENV }}" >> .env.test
           echo "PANTHER_ERROR_SCREENSHOT_DIR=${{ secrets.PANTHER_ERROR_SCREENSHOT_DIR }}" >> .env.test
