@@ -147,6 +147,8 @@
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/icecave/repr" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/justinrainbow/json-schema" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/marc-mabe/php-enum" />
+      <excludeFolder url="file://$MODULE_DIR$/api/vendor/api-platform/graphql" />
+      <excludeFolder url="file://$MODULE_DIR$/api/vendor/webonyx/graphql-php" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

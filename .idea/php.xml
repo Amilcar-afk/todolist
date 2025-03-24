@@ -156,6 +156,8 @@
       <path value="$PROJECT_DIR$/api/vendor/icecave/repr" />
       <path value="$PROJECT_DIR$/api/vendor/marc-mabe/php-enum" />
       <path value="$PROJECT_DIR$/api/vendor/justinrainbow/json-schema" />
+      <path value="$PROJECT_DIR$/api/vendor/api-platform/graphql" />
+      <path value="$PROJECT_DIR$/api/vendor/webonyx/graphql-php" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />

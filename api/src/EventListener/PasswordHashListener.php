@@ -36,10 +36,8 @@ class PasswordHashListener
             return;
         }
 
-        // vérifie si le champ "password" a été modifié avant de l'encoder
         if ($event->hasChangedField('password')) {
             $this->encodePassword($entity);
-            // recalcule les modifications sur l'entité après mise à jour du mot de passe
             $em = $event->getEntityManager();
             $metadata = $em->getClassMetadata(get_class($entity));
             $em->getUnitOfWork()->recomputeSingleEntityChangeSet($metadata, $entity);
@@ -52,7 +50,6 @@ class PasswordHashListener
             return;
         }
 
-        // hachage du mot de passe
         $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPassword());
         $user->setPassword($hashedPassword);
     }
