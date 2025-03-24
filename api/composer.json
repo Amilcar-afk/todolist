@@ -90,7 +90,9 @@
     },
     "require-dev": {
         "hautelook/alice-bundle": "^2.14",
+        "justinrainbow/json-schema": "^6.0",
         "phpunit/phpunit": "^11.4",
-        "symfony/maker-bundle": "^1.61"
+        "symfony/maker-bundle": "^1.61",
+        "zenstruck/foundry": "^2.3"
     }
 }

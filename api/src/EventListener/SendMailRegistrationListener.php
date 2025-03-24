@@ -28,6 +28,11 @@ class SendMailRegistrationListener
             return;
         }
 
+        if ($this->isTestEnvironment()) {
+            $tokenVerification = $entity->getVerificationToken();
+            $entity->setVerificationTokenTest($tokenVerification);
+        }
+
         $email = (new TemplatedEmail())
             ->from(new Address('no-reply@example.com', 'todolist'))
             ->to($entity->getEmail())
@@ -36,5 +41,10 @@ class SendMailRegistrationListener
 
         $this->emailVerifier->sendEmailConfirmation('app_verify_email', $entity, $email);
         $this->mailer->send($email);
+    }
+
+    private function isTestEnvironment(): bool
+    {
+        return $_ENV['APP_ENV'] === 'test';
     }
 }

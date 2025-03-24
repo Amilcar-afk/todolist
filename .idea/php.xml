@@ -149,11 +149,25 @@
       <path value="$PROJECT_DIR$/api/vendor/symfony/polyfill-intl-idn" />
       <path value="$PROJECT_DIR$/api/vendor/symfony/mailer" />
       <path value="$PROJECT_DIR$/api/vendor/symfony/mime" />
+      <path value="$PROJECT_DIR$/api/vendor/zenstruck/assert" />
+      <path value="$PROJECT_DIR$/api/vendor/zenstruck/foundry" />
+      <path value="$PROJECT_DIR$/api/vendor/doctrine/doctrine-fixtures-bundle" />
+      <path value="$PROJECT_DIR$/api/vendor/icecave/parity" />
+      <path value="$PROJECT_DIR$/api/vendor/icecave/repr" />
+      <path value="$PROJECT_DIR$/api/vendor/marc-mabe/php-enum" />
+      <path value="$PROJECT_DIR$/api/vendor/justinrainbow/json-schema" />
+      <path value="$PROJECT_DIR$/api/vendor/api-platform/graphql" />
+      <path value="$PROJECT_DIR$/api/vendor/webonyx/graphql-php" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />
   <component name="PhpStanOptionsConfiguration">
     <option name="transferred" value="true" />
+  </component>
+  <component name="PhpStepFilterConfiguration">
+    <skipped_functions>
+      <skipped_function name="Symfony\Component\ErrorHandler\DebugClassLoader-&gt;loadClass" />
+    </skipped_functions>
   </component>
   <component name="PhpUnit">
     <phpunit_settings>

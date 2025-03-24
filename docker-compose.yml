@@ -16,6 +16,29 @@ services:
     networks:
       - symfony_net
 
+  test:
+    build:
+      context: ./api
+    container_name: phpunit_tests
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://user:password@db:5432/todolist
+    volumes:
+      - ./api:/var/www/html
+    env_file:
+      - ./api/.env
+      - ./api/.env.test
+    networks:
+      - symfony_net
+    command: >
+      sh -c "
+      php bin/console doctrine:database:drop --force --if-exists --env=test &&
+      php bin/console doctrine:database:create --if-not-exists --env=test &&
+      php bin/console doctrine:migrations:migrate --no-interaction --env=test &&
+      vendor/bin/phpunit
+      "
+
   front:
     build:
       context: ./front
@@ -49,7 +72,9 @@ services:
       MP_SMTP_AUTH_ACCEPT_ANY: 1
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
     networks:
-      - symfony_net
+      symfony_net:
+       aliases:
+          - todolist-mailer-1
 
 networks:
   symfony_net:
